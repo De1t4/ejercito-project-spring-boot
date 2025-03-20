@@ -9,6 +9,7 @@ import ejercito.demo.service.barrack.DataResponseBarrack;
 import ejercito.demo.service.barrack.DataUpdateBarrack;
 import ejercito.demo.service.barrack.ServiceBarrack;
 import ejercito.demo.service.company.DataRegisterCompany;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -23,6 +24,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
+@SecurityRequirement(name = "bearer-key")
 @RequestMapping("/barracks")
 public class BarrackController {
 

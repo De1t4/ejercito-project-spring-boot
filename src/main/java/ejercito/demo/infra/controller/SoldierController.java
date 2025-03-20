@@ -7,6 +7,7 @@ import ejercito.demo.models.Body;
 import ejercito.demo.models.Company;
 import ejercito.demo.models.Soldier;
 import ejercito.demo.service.soldier.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.aspectj.weaver.ast.Not;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@SecurityRequirement(name = "bearer-key")
 @RequestMapping("/soldiers")
 public class SoldierController {
 
