@@ -1,4 +1,6 @@
 package ejercito.demo.service.auth;
 
-public record DataLoginUser(String username, String password) {
+import jakarta.validation.constraints.NotBlank;
+
+public record DataLoginUser(@NotBlank String username, @NotBlank String password) {
 }

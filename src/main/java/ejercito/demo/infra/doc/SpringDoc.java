@@ -15,14 +15,10 @@ public class SpringDoc {
   public OpenAPI customOpenAPI() {
     return new OpenAPI()
             .info(new Info()
-                    .title("APIs de proyecto Ejercito")
-                    .description("Documentación de la APIs del ejercito")
-                    .version("1.0.0")
-                    .contact(new Contact()
-                            .name("Mauricio")
-                            .email("mauriciochambicaceres@email.com"))
-                    .license(new License()
-                            .name("Apache 2.0")
-                            .url("http://www.apache.org/licenses/LICENSE-2.0.html")));
+                    .title("API de tu aplicación")
+                    .version("1.0")
+                    .description("Documentación de la API")
+                    .termsOfService("http://swagger.io/terms/")
+                    .license(new License().name("Apache 2.0").url("http://springdoc.org")));
   }
 }

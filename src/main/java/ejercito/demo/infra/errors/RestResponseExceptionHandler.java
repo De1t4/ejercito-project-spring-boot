@@ -5,11 +5,16 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.FilterChainProxy;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.nio.file.AccessDeniedException;
 
 @ControllerAdvice
 public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler  {
@@ -31,4 +36,18 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST, expection.getMessage());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
   }
+
+  @ExceptionHandler(AuthenticateFilterException.class)
+  public ResponseEntity<ErrorMessage> handleAuthenticateFilter(AuthenticateFilterException exception) {
+    ErrorMessage errorMessage = new ErrorMessage(HttpStatus.UNAUTHORIZED, exception.getMessage());
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorMessage);
+  }
+
+  @ExceptionHandler(AccessDeniedException.class)
+  public ResponseEntity<ErrorMessage> handleAccessDenied(AccessDeniedException exception) {
+    return ResponseEntity.status(HttpStatus.FORBIDDEN)
+            .body(new ErrorMessage(HttpStatus.FORBIDDEN, "No tienes permiso para acceder a este recurso"));
+  }
+
+
 }

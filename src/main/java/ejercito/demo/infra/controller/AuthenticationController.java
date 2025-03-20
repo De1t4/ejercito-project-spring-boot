@@ -5,6 +5,7 @@ import ejercito.demo.models.User;
 import ejercito.demo.service.auth.DataLoginUser;
 import ejercito.demo.service.auth.DataTokenJWT;
 import ejercito.demo.service.auth.ServiceAuth;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

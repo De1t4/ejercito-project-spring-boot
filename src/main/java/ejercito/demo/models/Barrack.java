@@ -53,4 +53,8 @@ public class Barrack {
       this.location = dataUpdateBarrack.location();
     }
   }
+
+  public void setId_barrack(Long id_barrack) {
+    this.id_barrack = id_barrack;
+  }
 }

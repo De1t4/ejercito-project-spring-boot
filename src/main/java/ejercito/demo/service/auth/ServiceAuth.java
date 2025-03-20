@@ -18,7 +18,7 @@ public class ServiceAuth {
   @Autowired
   private TokenService tokenService;
 
-  public String login(DataLoginUser dataLoginUser){
+  public String login(DataLoginUser dataLoginUser) throws NotFoundException{
     validateFields(dataLoginUser.username(), "USERNAME");
     validateFields(dataLoginUser.password(), "PASSWORD");
     User user = findUsername(dataLoginUser.username());
@@ -28,12 +28,12 @@ public class ServiceAuth {
 
       return tokenService.generarToken(user);
     }
-    throw new RuntimeException("PASSWORD INVALID");
+    throw new NotFoundException("Username or login within incorrects");
   }
 
   private User findUsername(String username) {
     return userRepository.findByUsername(username)
-            .orElseThrow(() -> new NotFoundException("User " + username + " not found"));
+            .orElseThrow(() -> new NotFoundException("Username or login within incorrects"));
   }
 
   private void validateFields(String field, String fieldName) {
