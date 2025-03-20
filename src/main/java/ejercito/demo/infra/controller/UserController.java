@@ -1,18 +1,14 @@
 package ejercito.demo.infra.controller;
 
 
-import ejercito.demo.infra.repository.SoldierRepository;
 import ejercito.demo.infra.repository.UserRepository;
-import ejercito.demo.models.Soldier;
 import ejercito.demo.models.User;
-import ejercito.demo.service.soldier.ServiceSoldier;
 import ejercito.demo.service.user.DataListUser;
 import ejercito.demo.service.user.DataRegisterUser;
 import ejercito.demo.service.user.ServiceUser;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 

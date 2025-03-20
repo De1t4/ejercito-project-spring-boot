@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.JWTVerifier;
 import ejercito.demo.models.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -35,24 +36,26 @@ public class TokenService {
   }
 
   public String getSubject(String token) {
-    if (token == null) {
-      throw new RuntimeException();
+    if (token == null || token.trim().isEmpty()) {
+      throw new IllegalArgumentException("El token no puede ser nulo o vacío");
     }
-    DecodedJWT verifier = null;
     try {
-      Algorithm algorithm = Algorithm.HMAC256(API_SECRET); // validando firma
-      verifier = JWT.require(algorithm)
+      Algorithm algorithm = Algorithm.HMAC256(API_SECRET); // Validando firma
+      JWTVerifier verifier = JWT.require(algorithm)
               .withIssuer("ejercito")
-              .build()
-              .verify(token);
-      verifier.getSubject();
+              .build();
+
+      DecodedJWT decodedJWT = verifier.verify(token);
+      String subject = decodedJWT.getSubject();
+
+      if (subject == null || subject.isEmpty()) {
+        throw new IllegalStateException("El token no contiene un sujeto válido");
+      }
+
+      return subject;
     } catch (JWTVerificationException exception) {
-      System.out.println(exception.toString());
+      throw new SecurityException("Token inválido o expirado", exception);
     }
-    if (verifier.getSubject() == null) {
-      throw new RuntimeException("Verifier invalido");
-    }
-    return verifier.getSubject();
   }
 
   private Instant generarFechaExpiracion() {

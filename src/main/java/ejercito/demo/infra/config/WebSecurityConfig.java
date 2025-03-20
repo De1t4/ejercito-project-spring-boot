@@ -20,6 +20,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
 
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+
 @Configuration
 public class WebSecurityConfig {
 
@@ -32,10 +34,10 @@ public class WebSecurityConfig {
     http
             .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Configuración de CORS
             .csrf(csrf -> csrf.disable())
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
             .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                    .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/error").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/**").permitAll()
+                    .requestMatchers("/swagger-ui/**", "/swagger-ui.html" ,"/v3/api-docs/**", "/swagger-resources/**", "/error").permitAll()
                     .anyRequest().authenticated()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
