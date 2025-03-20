@@ -6,6 +6,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,28 +27,33 @@ public class SecurityFilter extends OncePerRequestFilter {
   private UserRepository userRepository;
 
   @Override
-  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException, AuthenticateFilterException, AccessDeniedException{
-    try {
-      // Obtener el token del header
-      var authHeader = request.getHeader("Authorization");
+  protected void doFilterInternal(
+          @NotNull HttpServletRequest request,
+          @NotNull HttpServletResponse response,
+          @NotNull FilterChain filterChain) throws ServletException, IOException, AuthenticateFilterException, AccessDeniedException{
 
-      if (authHeader == null || authHeader.isEmpty()) {
-        throw new AccessDeniedException("Token de autenticación es requerido");
-      }
+    if (request.getServletPath().contains("/auth/**") || request.getServletPath().contains("/swagger-ui/**") || request.getServletPath().contains("/v3/**") ) {
+      filterChain.doFilter(request, response);
+      return;
+    }
 
-      var token = authHeader.replace("Bearer ", "");
-      var nombreUsuario = tokenService.getSubject(token);
-      if (nombreUsuario != null) {
-        var user = userRepository.findByUsername(nombreUsuario);
-        if (user.isPresent()) {
-          var authentication = new UsernamePasswordAuthenticationToken(user.get(), null,
-                  user.get().getAuthorities());
-          SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    var authHeader = request.getHeader("Authorization");
+
+      if(authHeader != null){
+        var token = authHeader.replace("Bearer ", "");
+        var nombreUsuario = tokenService.getSubject(token);
+        if (nombreUsuario != null) {
+          var user = userRepository.findByUsername(nombreUsuario);
+          if (user.isPresent()) {
+            var authentication = new UsernamePasswordAuthenticationToken(user.get(), null,
+                    user.get().getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+          }
         }
       }
+
       filterChain.doFilter(request, response);
-    } catch (AccessDeniedException ex) {
-      throw new AccessDeniedException(ex.getMessage());
-    }
+
   }
 }
