@@ -5,7 +5,8 @@ import ejercito.demo.service.soldier.DataUpdateSoldier;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.sql.Date;
+
 
 @Table(name = "soldiers")
 @Entity(name = "Soldier")

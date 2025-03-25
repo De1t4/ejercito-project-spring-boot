@@ -2,7 +2,7 @@ package ejercito.demo.service.soldier;
 
 import ejercito.demo.models.Soldier;
 
-import java.util.Date;
+import java.sql.Date;
 
 public record DataListSoldier(Long id_soldier, String name, String lastname, Date graduation) {
 

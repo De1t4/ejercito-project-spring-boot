@@ -1,5 +1,6 @@
 package ejercito.demo.models;
 
+import ejercito.demo.service.soldier.DataRegisterUserWithSoldier;
 import ejercito.demo.service.user.DataRegisterUser;
 import jakarta.persistence.*;
 import lombok.*;
@@ -42,6 +43,14 @@ public class User implements UserDetails {
     this.username = dataRegisterUser.username();
     this.password = new BCryptPasswordEncoder().encode(dataRegisterUser.password());
     this.role = dataRegisterUser.role();
+    this.soldier = soldier;
+  }
+
+
+  public User(DataRegisterUserWithSoldier dataRegisterSoldier, Soldier soldier) {
+    this.username = dataRegisterSoldier.username();
+    this.password = new BCryptPasswordEncoder().encode(dataRegisterSoldier.password());
+    this.role = "SOLDADO";
     this.soldier = soldier;
   }
 
