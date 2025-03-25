@@ -1,5 +1,7 @@
 package ejercito.demo.models;
 
+import ejercito.demo.service.profile.DataUpdateProfile;
+import ejercito.demo.service.soldier.DataRegisterUserWithSoldier;
 import ejercito.demo.service.user.DataRegisterUser;
 import jakarta.persistence.*;
 import lombok.*;
@@ -45,8 +47,20 @@ public class User implements UserDetails {
     this.soldier = soldier;
   }
 
+
+  public User(DataRegisterUserWithSoldier dataRegisterSoldier, Soldier soldier) {
+    this.username = dataRegisterSoldier.username();
+    this.password = new BCryptPasswordEncoder().encode(dataRegisterSoldier.password());
+    this.role = "SOLDADO";
+    this.soldier = soldier;
+  }
+
   public Long getId_user() {
     return id_user;
+  }
+
+  public Soldier getSoldier() {
+    return soldier;
   }
 
   public String getUsername() {
@@ -84,5 +98,11 @@ public class User implements UserDetails {
 
   public String getRole() {
     return role;
+  }
+
+  public void updateProfile(DataUpdateProfile dataUpdateProfile) {
+    if(dataUpdateProfile.password() != null){
+      this.password = new BCryptPasswordEncoder().encode(dataUpdateProfile.password());
+    }
   }
 }

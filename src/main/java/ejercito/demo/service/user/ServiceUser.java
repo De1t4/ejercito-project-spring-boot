@@ -1,5 +1,6 @@
 package ejercito.demo.service.user;
 
+import ejercito.demo.infra.errors.BadRequestException;
 import ejercito.demo.infra.errors.DuplicateException;
 import ejercito.demo.infra.repository.SoldierRepository;
 import ejercito.demo.infra.repository.UserRepository;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
+import java.util.Objects;
 
 @Service
 public class ServiceUser {
@@ -24,21 +26,18 @@ public class ServiceUser {
   @Autowired
   private ServiceSoldier serviceSoldier;
 
-  public User createUser( DataRegisterUser dataRegisterUser)  throws Exception{
-
-    if ("SOLDADO".equals(dataRegisterUser.role()) && dataRegisterUser.dataRegisterSoldier() == null) {
-      throw new RuntimeException("Error: SOLDIER debe tener información de Soldier.");
-    }
-
+  public User createUser( DataRegisterUser dataRegisterUser) throws Exception{
     if (userRepository.findByUsername(dataRegisterUser.username()).isPresent()){
       throw new DuplicateException("THE USER " + dataRegisterUser.username() + " HAS ALREADY BEEN REGISTERED");
     }
 
-    if(dataRegisterUser.role().equals("SOLDADO")){
-      Soldier soldier = soldierRepository.save(serviceSoldier.createSoldierWithData(dataRegisterUser.dataRegisterSoldier()));
-      return userRepository.save(new User(soldier, dataRegisterUser));
+    if (!dataRegisterUser.role().equals("SOLDADO") &&
+            !dataRegisterUser.role().equals("OFICIAL") &&
+            !dataRegisterUser.role().equals("SUB_OFICIAL")) {
+      throw new BadRequestException("THE ROLE ENTERED IS NOT ALLOWED, ROLE ALLOWED (OFICIAL, SOLDADO, SUB_OFICIAL)");
     }
 
     return userRepository.save(new User(dataRegisterUser));
   }
+
 }

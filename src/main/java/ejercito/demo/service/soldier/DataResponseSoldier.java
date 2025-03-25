@@ -4,7 +4,7 @@ import ejercito.demo.models.Barrack;
 import ejercito.demo.models.Body;
 import ejercito.demo.models.Company;
 
-import java.util.Date;
+import java.sql.Date;
 
 public record DataResponseSoldier(
         Long id_soldier,

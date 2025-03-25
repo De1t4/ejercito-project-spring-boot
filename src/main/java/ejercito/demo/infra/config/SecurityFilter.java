@@ -1,5 +1,6 @@
 package ejercito.demo.infra.config;
 
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import ejercito.demo.infra.errors.AuthenticateFilterException;
 import ejercito.demo.infra.repository.UserRepository;
 import jakarta.servlet.FilterChain;
@@ -33,7 +34,7 @@ public class SecurityFilter extends OncePerRequestFilter {
   protected void doFilterInternal(
           @NotNull HttpServletRequest request,
           @NotNull HttpServletResponse response,
-          @NotNull FilterChain filterChain) throws ServletException, IOException, AuthenticateFilterException, AccessDeniedException{
+          @NotNull FilterChain filterChain) throws  ServletException, IOException, AuthenticateFilterException, TokenExpiredException {
 
     if (request.getServletPath().contains("/auth/**") || request.getServletPath().contains("/swagger-ui/**") || request.getServletPath().contains("/v3/**") ) {
       filterChain.doFilter(request, response);
@@ -45,6 +46,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         var token = authHeader.replace("Bearer ", "");
 
         var nombreUsuario = tokenService.getSubject(token);
+
         if (nombreUsuario != null) {
           var user = userRepository.findByUsername(nombreUsuario);
           if (user.isPresent()) {

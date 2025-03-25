@@ -5,7 +5,8 @@ import ejercito.demo.service.service.DataUpdateServices;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Table(name = "services")
 @Entity(name = "Service")
@@ -19,18 +20,14 @@ public class Services {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id_service;
   private String description;
-  private Date end_service;
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "id_soldier")
-  private Soldier soldier;
+  @OneToMany(mappedBy = "services", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+  private Set<Assignment> serviceSoldiers = new HashSet<>();
 
-  public Services() {
+  public Services(DataRegisterService dataRegisterService) {
+    this.description = dataRegisterService.description();
   }
 
-  public Services(DataRegisterService data, Soldier soldier) {
-    this.description = data.description();
-    this.end_service = data.end_service();
-    this.soldier = soldier;
+  public Services() {
   }
 
   public Long getId_service() {
@@ -41,23 +38,11 @@ public class Services {
     return description;
   }
 
-  public Date getEnd_service() {
-    return end_service;
+  public Set<Assignment> getServiceSoldiers() {
+    return serviceSoldiers;
   }
 
-  public Soldier getSoldier() {
-    return soldier;
-  }
-
-  public void updateDataService(DataUpdateServices data, Soldier soldier) {
-    if(data.description() != null){
-      this.description = data.description();
-    }
-    if(data.end_service() != null){
-      this.end_service = data.end_service();
-    }
-    if(soldier != null){
-      this.soldier = soldier;
-    }
+  public void updateDataService(DataUpdateServices dataUpdateServices) {
+    this.description = dataUpdateServices.description();
   }
 }

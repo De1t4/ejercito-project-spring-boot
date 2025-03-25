@@ -33,6 +33,8 @@ public class ServiceController {
     return ResponseEntity.ok(createDataListServices(serviceRepository.findAll()));
   }
 
+
+
   @GetMapping("/{id}")
   public ResponseEntity<DataResponseService> getServiceById(@PathVariable Long id){
     return ResponseEntity.ok(createDataService(serviceSoldierServices.getServiceById(id)));
@@ -45,28 +47,31 @@ public class ServiceController {
     return  ResponseEntity.created(url).body(createDataService(services));
   }
 
+
   @PutMapping
   @Transactional
   public ResponseEntity<DataResponseService> modifyServiceWithSolder(@RequestBody DataUpdateServices dataUpdateServices){
     return ResponseEntity.ok(createDataService(serviceSoldierServices.modifyServices(dataUpdateServices)));
   }
 
-  @DeleteMapping("/{id}")
-  @Transactional
-  public ResponseEntity<ProjectInfoProperties.Build> deleteService(@PathVariable Long id){
-    serviceSoldierServices.deleteServiceById(id);
-    return ResponseEntity.noContent().build();
-  }
 
-  private DataResponseService createDataService(Services services){
-    return new DataResponseService(services.getId_service(), services.getDescription(), services.getEnd_service(), services.getSoldier().getId_soldier());
-  }
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<ProjectInfoProperties.Build> deleteService(@PathVariable Long id){
+      serviceSoldierServices.deleteServiceById(id);
+      return ResponseEntity.noContent().build();
+    }
 
   private List<DataListResponseService> createDataListServices(List<Services> services){
     ArrayList<DataListResponseService> newListServices = new ArrayList<DataListResponseService>();
     for(Services service : services){
-      newListServices.add(new DataListResponseService(service.getId_service(), service.getDescription(), service.getEnd_service()));
+      newListServices.add(new DataListResponseService(service.getId_service(), service.getDescription()));
     }
     return newListServices;
+  }
+
+
+  private DataResponseService createDataService(Services services){
+    return new DataResponseService(services.getId_service(), services.getDescription());
   }
 }

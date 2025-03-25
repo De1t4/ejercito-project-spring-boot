@@ -1,15 +1,14 @@
-package ejercito.demo.service.user;
+package ejercito.demo.service.soldier;
 
 import jakarta.validation.constraints.NotBlank;
 
-
-public record DataRegisterUser(
+public record DataRegisterUserWithSoldier(
         @NotBlank
         String username,
         @NotBlank
         String password,
-        @NotBlank
-        String role
+        DataRegisterSoldier dataRegisterSoldier
+
 ) {
 
 }

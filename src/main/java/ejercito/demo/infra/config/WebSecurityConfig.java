@@ -32,6 +32,7 @@ public class WebSecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register", "/auth/**").permitAll()
                     .requestMatchers(HttpMethod.GET, "/v1/**").hasAnyRole("SOLDADO", "SUB_OFICIAL", "OFICIAL")
+                    .requestMatchers(HttpMethod.PUT, "/v1/profile/update").hasAnyRole("SUB_OFICIAL", "OFICIAL", "SOLDADO")
                     .requestMatchers(HttpMethod.POST, "/v1/**").hasAnyRole("SUB_OFICIAL", "OFICIAL")
                     .requestMatchers(HttpMethod.PUT, "/v1/**").hasAnyRole("SUB_OFICIAL", "OFICIAL")
                     .requestMatchers(HttpMethod.DELETE, "/v1/**").hasAnyRole("SUB_OFICIAL", "OFICIAL")
