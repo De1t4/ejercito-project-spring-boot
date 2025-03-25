@@ -36,8 +36,6 @@ public class SecurityFilter extends OncePerRequestFilter {
       filterChain.doFilter(request, response);
       return;
     }
-
-
     var authHeader = request.getHeader("Authorization");
 
       if(authHeader != null){
@@ -52,8 +50,6 @@ public class SecurityFilter extends OncePerRequestFilter {
           }
         }
       }
-
       filterChain.doFilter(request, response);
-
   }
 }

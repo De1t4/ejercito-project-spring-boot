@@ -3,6 +3,7 @@ package ejercito.demo.infra.controller;
 import ejercito.demo.infra.repository.ServiceRepository;
 import ejercito.demo.models.Services;
 import ejercito.demo.service.service.*;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@SecurityRequirement(name = "bearer-key")
 @RequestMapping("/services")
 public class ServiceController {
 

@@ -1,42 +1,27 @@
 package ejercito.demo.infra.controller;
 
-
 import ejercito.demo.infra.repository.UserRepository;
 import ejercito.demo.models.User;
 import ejercito.demo.service.user.DataListUser;
-import ejercito.demo.service.user.DataRegisterUser;
-import ejercito.demo.service.user.ServiceUser;
-import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@SecurityRequirement(name = "bearer-key")
 @RequestMapping("/users")
 public class UserController {
 
   @Autowired
   private UserRepository userRepository;
 
-  @Autowired
-  private ServiceUser serviceUser;
-
   @GetMapping
   public ResponseEntity<List<DataListUser>> getListUser(){
-    return ResponseEntity.status(200).body(createDataUser(userRepository.findAll()));
-  }
-
-  @PostMapping
-  public ResponseEntity<User> createUser(@RequestBody @Valid DataRegisterUser dataRegisterUser, UriComponentsBuilder uriComponentsBuilder) throws Exception {
-    User user = serviceUser.createUser(dataRegisterUser);
-    URI url = uriComponentsBuilder.path("/users/{id}").buildAndExpand(user.getId_user()).toUri();
-    return ResponseEntity.created(url).body(user) ;
-
+    return ResponseEntity.ok(createDataUser(userRepository.findAll()));
   }
 
   private List<DataListUser> createDataUser(List<User> users){
