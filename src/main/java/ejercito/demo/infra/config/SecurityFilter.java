@@ -10,12 +10,15 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
@@ -40,12 +43,13 @@ public class SecurityFilter extends OncePerRequestFilter {
 
       if(authHeader != null){
         var token = authHeader.replace("Bearer ", "");
+
         var nombreUsuario = tokenService.getSubject(token);
         if (nombreUsuario != null) {
           var user = userRepository.findByUsername(nombreUsuario);
           if (user.isPresent()) {
-            var authentication = new UsernamePasswordAuthenticationToken(user.get(), null,
-                    user.get().getAuthorities());
+            List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + user.get().getRole()));
+            var authentication = new UsernamePasswordAuthenticationToken(user.get(), null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
           }
         }

@@ -30,7 +30,11 @@ public class WebSecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
             .authorizeHttpRequests(authorize -> authorize
-                    .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register", "/auth/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/v1/**").hasAnyRole("SOLDADO", "SUB_OFICIAL", "OFICIAL")
+                    .requestMatchers(HttpMethod.POST, "/v1/**").hasAnyRole("SUB_OFICIAL", "OFICIAL")
+                    .requestMatchers(HttpMethod.PUT, "/v1/**").hasAnyRole("SUB_OFICIAL", "OFICIAL")
+                    .requestMatchers(HttpMethod.DELETE, "/v1/**").hasAnyRole("SUB_OFICIAL", "OFICIAL")
                     .requestMatchers("/swagger-ui/**", "/swagger-ui.html" ,"/v3/api-docs/**", "/swagger-resources/**", "/error").permitAll()
                     .anyRequest().authenticated()
             )

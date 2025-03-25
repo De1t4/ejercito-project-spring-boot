@@ -27,7 +27,7 @@ public class TokenService {
               .withIssuer("ejercito")
               .withSubject(user.getUsername())
               .withClaim("id", user.getId_user())
-              .withAudience(user.getRole())
+              .withClaim("role", user.getRole())
               .withExpiresAt(generarFechaExpiracion())
               .sign(algorithm);
     } catch (JWTCreationException exception){

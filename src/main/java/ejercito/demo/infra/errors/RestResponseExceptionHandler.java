@@ -1,17 +1,13 @@
 package ejercito.demo.infra.errors;
 
 import ejercito.demo.infra.errors.dto.ErrorMessage;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.dao.DataIntegrityViolationException;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.FilterChainProxy;
-import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.nio.file.AccessDeniedException;
@@ -46,8 +42,16 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
   @ExceptionHandler(AccessDeniedException.class)
   public ResponseEntity<ErrorMessage> handleAccessDenied(AccessDeniedException exception) {
     return ResponseEntity.status(HttpStatus.FORBIDDEN)
-            .body(new ErrorMessage(HttpStatus.FORBIDDEN, "No tienes permiso para acceder a este recurso"));
+            .body(new ErrorMessage(HttpStatus.FORBIDDEN, "You do not have permission to access this resource"));
   }
 
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity<ErrorMessage> handleValidatePositiveNumber(ConstraintViolationException exception){
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage()));
+  }
 
+  @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+  public ResponseEntity<ErrorMessage> handleErrorType(MethodArgumentTypeMismatchException exception) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage(HttpStatus.BAD_REQUEST, "The variable type entered is incorrect"));
+  }
 }
