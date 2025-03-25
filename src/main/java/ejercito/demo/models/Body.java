@@ -1,8 +1,8 @@
 package ejercito.demo.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import ejercito.demo.service.body.DataRegisterBody;
+import ejercito.demo.service.body.DataUpdateBody;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Table(name = "army_bodies")
@@ -14,6 +14,7 @@ import lombok.*;
 @EqualsAndHashCode(of = "id")
 public class Body {
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id_body;
   private String denomination;
 
@@ -25,11 +26,19 @@ public class Body {
   public Body() {
   }
 
+  public Body(DataRegisterBody dataRegisterBody) {
+    this.denomination = dataRegisterBody.denomination();
+  }
+
   public String getDenomination() {
     return denomination;
   }
 
   public Long getId_body() {
     return id_body;
+  }
+
+  public void updateBodyArmy(DataUpdateBody dataUpdateBody) {
+    this.denomination = dataUpdateBody.denomination();
   }
 }
