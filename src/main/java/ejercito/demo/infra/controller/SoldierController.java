@@ -10,19 +10,22 @@ import ejercito.demo.service.soldier.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.aspectj.weaver.ast.Not;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @SecurityRequirement(name = "bearer-key")
-@RequestMapping("/soldiers")
+@RequestMapping("/v1/soldiers")
+@Validated
 public class SoldierController {
 
   @Autowired
@@ -37,13 +40,13 @@ public class SoldierController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Soldier> getSoldierById(@PathVariable Long id) throws NotFoundException {
+  public ResponseEntity<Soldier> getSoldierById(@PathVariable("id") @Positive @NumberFormat  Long id) throws NotFoundException {
     return ResponseEntity.ok(serviceSoldier.getSoldierById(id));
   }
 
   @PostMapping
-  public ResponseEntity<Soldier> createSoldier(@RequestBody @Valid DataRegisterSoldier dataRegisterSoldier, UriComponentsBuilder uriComponentsBuilder){
-    Soldier soldier = soldierRepository.save(serviceSoldier.createSoldierWithData(dataRegisterSoldier));
+  public ResponseEntity<Soldier> createSoldier(@RequestBody DataRegisterUserWithSoldier dataRegisterSoldier, UriComponentsBuilder uriComponentsBuilder){
+    Soldier soldier = serviceSoldier.createSoldierWithData(dataRegisterSoldier);
     URI url = uriComponentsBuilder.path("/users/{id}").buildAndExpand(soldier.getId_soldier()).toUri();
     return ResponseEntity.created(url).body(soldier);
   }
@@ -58,14 +61,14 @@ public class SoldierController {
 
   @DeleteMapping("/{id}")
   @Transactional
-  public ResponseEntity deleteSoldier(@PathVariable Long id){
+  public ResponseEntity deleteSoldier(@PathVariable @Positive @Valid Long id){
     soldierRepository.deleteById(id);
     return ResponseEntity.noContent().build();
   }
 
   @GetMapping("/search")
   public ResponseEntity<Soldier> searchSoldierByName(@RequestParam(value="name") String name){
-    return ResponseEntity.ok(soldierRepository.findByName(name));
+    return ResponseEntity.ok(serviceSoldier.searchSoldierByName(name));
   }
 
   private DataResponseSoldier mapDataSoldier(Soldier soldier){

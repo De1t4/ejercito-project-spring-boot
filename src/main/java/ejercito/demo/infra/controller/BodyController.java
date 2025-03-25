@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @SecurityRequirement(name = "bearer-key")
-@RequestMapping("/bodies")
+@RequestMapping("/v1/bodies")
 public class BodyController {
 
   @Autowired

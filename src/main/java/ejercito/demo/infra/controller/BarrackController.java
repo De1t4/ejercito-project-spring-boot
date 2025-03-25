@@ -25,7 +25,7 @@ import java.util.List;
 
 @RestController
 @SecurityRequirement(name = "bearer-key")
-@RequestMapping("/barracks")
+@RequestMapping("/v1/barracks")
 public class BarrackController {
 
   @Autowired

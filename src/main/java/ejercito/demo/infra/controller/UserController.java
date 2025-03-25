@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @SecurityRequirement(name = "bearer-key")
-@RequestMapping("/users")
+@RequestMapping("/v1/users")
 public class UserController {
 
   @Autowired

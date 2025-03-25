@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @SecurityRequirement(name = "bearer-key")
-@RequestMapping("/services")
+@RequestMapping("/v1/services")
 public class ServiceController {
 
   @Autowired
