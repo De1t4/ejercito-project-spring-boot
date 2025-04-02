@@ -1,14 +1,11 @@
 package ejercito.demo.models;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import ejercito.demo.service.soldier.DataRegisterSoldier;
 import ejercito.demo.service.soldier.DataUpdateSoldier;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Table(name = "soldiers")
@@ -35,9 +32,6 @@ public class Soldier {
   @JoinColumn(name ="id_body")
   private Body body;
 
-  @OneToMany(mappedBy = "soldier", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-  private Set<Assignment> assignments = new HashSet<>();
-
   public Soldier(DataRegisterSoldier dataRegisterSoldier, Company company, Barrack barrack, Body body){
     this.name = dataRegisterSoldier.name();
     this.lastname = dataRegisterSoldier.lastname();
@@ -58,6 +52,7 @@ public class Soldier {
       this.graduation = dataUpdateSoldier.graduation();
     }
   }
+
   public Soldier() {
   }
 
