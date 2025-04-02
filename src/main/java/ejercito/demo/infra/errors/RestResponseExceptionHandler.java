@@ -15,21 +15,21 @@ import java.nio.file.AccessDeniedException;
 @ControllerAdvice
 public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler {
 
+  @ExceptionHandler(DuplicateException.class)
+  public ResponseEntity<ErrorMessage> handleDuplicateDataException(DuplicateException exception) {
+    ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
+  }
+
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<ErrorMessage> handleNotFoundException(NotFoundException exception) {
     ErrorMessage errorMessage = new ErrorMessage(HttpStatus.NOT_FOUND, exception.getMessage());
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
   }
 
-  @ExceptionHandler(DuplicateException.class)
-  public ResponseEntity<ErrorMessage> handleDuplicateDataException(DuplicateException exception) {
-    ErrorMessage errorMessage = new ErrorMessage(HttpStatus.FOUND, exception.getMessage());
-    return ResponseEntity.status(HttpStatus.FOUND).body(errorMessage);
-  }
-
   @ExceptionHandler(BadRequestException.class)
-  public ResponseEntity<ErrorMessage> handleBadResquestDataException(BadRequestException expection) {
-    ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST, expection.getMessage());
+  public ResponseEntity<ErrorMessage> handleBadRequestDataException(BadRequestException exception) {
+    ErrorMessage errorMessage = new ErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
   }
 
@@ -52,7 +52,7 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
 
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
   public ResponseEntity<ErrorMessage> handleErrorType(MethodArgumentTypeMismatchException exception) {
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage(HttpStatus.BAD_REQUEST, "The variable type entered is incorrect"));
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage()));
   }
 
   @ExceptionHandler(TokenExpiredException.class)

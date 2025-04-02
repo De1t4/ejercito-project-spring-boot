@@ -4,15 +4,14 @@ import ejercito.demo.infra.mapper.AssignmentMapper;
 import ejercito.demo.infra.mapper.SoldierMapper;
 import ejercito.demo.models.Assignment;
 import ejercito.demo.models.Services;
-import ejercito.demo.service.Assignment.AssignmentService;
-import ejercito.demo.service.Assignment.DataRegisterSoldierAssignment;
-import ejercito.demo.service.Assignment.DataResponseAssignment;
+import ejercito.demo.service.Assignment.*;
 import ejercito.demo.service.soldier.DataResponseSoldierBasic;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -39,6 +38,20 @@ public class AssignmentController {
     return ResponseEntity.ok(assignmentMapper.toListSoldiers(new HashSet<>(assignments)));
   }
 
+  @PostMapping("/services/created/assignments")
+  public ResponseEntity<List<DataResponseBothServiceAndAssignment>> createBothServiceAndAssigned(@RequestBody @Valid DataBothServiceAndAssignment data) {
+    List<Assignment> assignments = assignmentService.createBothServiceAndAssigned(data);
+    List<DataResponseBothServiceAndAssignment> dataResponseAssignmentList = new ArrayList<>();
+    for (Assignment assignment : assignments) {
+      dataResponseAssignmentList.add(new DataResponseBothServiceAndAssignment(assignment.getId_services_soldiers(), assignment.getSoldier().getId_soldier(), assignment.getServices().getDescription()));
+    }
+    return ResponseEntity.ok(dataResponseAssignmentList);
+  }
+
+  @PutMapping("/services/finish/assignments")
+  public ResponseEntity<List<DataFinishResponseAssignment>> finishServiceAssigned(@RequestBody DataFinishAssignment dataFinishAssignment) {
+    return ResponseEntity.ok(assignmentService.finishServiceAssigned(dataFinishAssignment.id_services_soldiers()));
+  }
 
 
 }

@@ -59,6 +59,7 @@ public class CompanyController {
   @DeleteMapping("/{id}")
   @Transactional
   public ResponseEntity deleteCompany(@PathVariable @Valid Long id){
+    serviceCompany.getCompanyById(id);
     companyRepository.deleteById(id);
     return ResponseEntity.noContent().build();
   }

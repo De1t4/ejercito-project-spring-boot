@@ -25,7 +25,6 @@ public class ServiceAuth {
 
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     if (passwordEncoder.matches(dataLoginUser.password(), user.getPassword())) {
-
       return tokenService.generarToken(user);
     }
     throw new NotFoundException("Username or login within incorrects");

@@ -1,15 +1,12 @@
 package ejercito.demo.models;
 
 import jakarta.persistence.*;
-import jdk.jfr.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.CurrentTimestamp;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Table(name = "services_soldiers")
@@ -34,9 +31,9 @@ public class Assignment {
 
   @CreationTimestamp
   private LocalDateTime at_service;
-  private Date end_service;
+  private LocalDateTime end_service;
 
-  public Assignment(Date end_service, LocalDateTime at_service, Services services, Soldier soldier) {
+  public Assignment(LocalDateTime end_service, LocalDateTime at_service, Services services, Soldier soldier) {
     this.end_service = end_service;
     this.at_service = at_service;
     this.services = services;
@@ -49,6 +46,10 @@ public class Assignment {
   }
 
   public Assignment() {
+  }
+
+  public void finishServiceAssigned() {
+    this.end_service = LocalDateTime.now();
   }
 
   public Long getId_services_soldiers() {
@@ -67,7 +68,7 @@ public class Assignment {
     return at_service;
   }
 
-  public Date getEnd_service() {
+  public LocalDateTime getEnd_service() {
     return end_service;
   }
 }

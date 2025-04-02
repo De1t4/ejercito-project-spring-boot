@@ -69,7 +69,7 @@ public class SoldierController {
   @DeleteMapping("/{id}")
   @Transactional
   public ResponseEntity deleteSoldier(@PathVariable @Positive @Valid Long id) {
-    soldierRepository.deleteById(id);
+    serviceSoldier.deleteById(id);
     return ResponseEntity.noContent().build();
   }
 
