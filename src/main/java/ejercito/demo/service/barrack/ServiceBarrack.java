@@ -21,21 +21,21 @@ public class ServiceBarrack {
   public Barrack createBarrackWithData(@Valid DataRegisterBarrack dataRegisterBarrack) {
     validateFields(dataRegisterBarrack.name(), "NAME");
     validateFields(dataRegisterBarrack.location(), "LOCATION");
-    return barrackRepository.save( new Barrack(dataRegisterBarrack));
+    return barrackRepository.save(new Barrack(dataRegisterBarrack));
   }
 
   public Barrack updateDataBarrack(DataUpdateBarrack dataUpdateBarrack) throws BadRequestException {
-    if (dataUpdateBarrack.id_barrack() == null ){
+    if (dataUpdateBarrack.id_barrack() == null) {
       throw new BadRequestException("NOT FOUND FIELD ID_BARRACK");
     }
 
     Barrack barrack = findBarrackOrThrow(dataUpdateBarrack.id_barrack());
-    barrack.updateDataSoldier(dataUpdateBarrack);
+    barrack.updateDataBarrack(dataUpdateBarrack);
     return barrack;
   }
 
-  public void deleteBarrackById(@Valid Long idBarrack) throws BadRequestException{
-    if (idBarrack == null){
+  public void deleteBarrackById(@Valid Long idBarrack) throws BadRequestException {
+    if (idBarrack == null) {
       throw new BadRequestException("NOT FOUND FIELD ID_BARRACK");
     }
     findBarrackOrThrow(idBarrack);

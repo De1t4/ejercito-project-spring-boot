@@ -1,4 +1,4 @@
-package ejercito.demo.service.Assignment;
+package ejercito.demo.service.assignment;
 
 import ejercito.demo.infra.errors.BadRequestException;
 import ejercito.demo.infra.errors.NotFoundException;
@@ -6,11 +6,13 @@ import ejercito.demo.infra.repository.AssignmentRepository;
 import ejercito.demo.models.Assignment;
 import ejercito.demo.models.Services;
 import ejercito.demo.models.Soldier;
+import ejercito.demo.service.assignment.dto.request.DataBothServiceAndAssignment;
+import ejercito.demo.service.assignment.dto.request.DataRegisterSoldierAssignment;
+import ejercito.demo.service.assignment.dto.response.DataFinishResponseAssignment;
 import ejercito.demo.service.service.DataRegisterService;
 import ejercito.demo.service.service.ServiceSoldierServices;
 import ejercito.demo.service.soldier.ServiceSoldier;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -67,11 +69,11 @@ public class AssignmentService {
   public List<DataFinishResponseAssignment> finishServiceAssigned(List<Long> ids) {
     validateListSoldiers(ids);
     List<Assignment> assignments = getAssignmentByIds(ids);
-    for(Assignment assignment :assignments){
+    for (Assignment assignment : assignments) {
       assignment.finishServiceAssigned();
     }
     List<DataFinishResponseAssignment> dataFinishResponseAssignments = new ArrayList<>();
-    for (Assignment assignment: assignments){
+    for (Assignment assignment : assignments) {
       dataFinishResponseAssignments.add(new DataFinishResponseAssignment(assignment.getId_services_soldiers(), assignment.getSoldier().getId_soldier(), assignment.getEnd_service(), assignment.getAt_service(), assignment.getServices().getDescription()));
     }
 

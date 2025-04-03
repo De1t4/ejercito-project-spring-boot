@@ -17,7 +17,6 @@ public class ServiceBody {
   @Autowired
   private BodyRepository bodyRepository;
 
-
   public Body getBodyById(Long id) {
     return findBodyArmy(id);
   }

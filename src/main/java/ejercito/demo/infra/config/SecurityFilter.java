@@ -2,6 +2,7 @@ package ejercito.demo.infra.config;
 
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import ejercito.demo.infra.errors.AuthenticateFilterException;
+import ejercito.demo.infra.errors.BussinessException;
 import ejercito.demo.infra.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,7 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Component
@@ -45,15 +46,32 @@ public class SecurityFilter extends OncePerRequestFilter {
       if(authHeader != null){
         var token = authHeader.replace("Bearer ", "");
 
-        var nombreUsuario = tokenService.getSubject(token);
 
-        if (nombreUsuario != null) {
-          var user = userRepository.findByUsername(nombreUsuario);
-          if (user.isPresent()) {
-            List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + user.get().getRole()));
-            var authentication = new UsernamePasswordAuthenticationToken(user.get(), null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        try {
+          var nombreUsuario = tokenService.getSubject(token);
+
+          if (nombreUsuario != null) {
+            var user = userRepository.findByUsername(nombreUsuario);
+            if (user.isPresent()) {
+              List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + user.get().getRole()));
+              var authentication = new UsernamePasswordAuthenticationToken(user.get(), null, authorities);
+              SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
           }
+
+        } catch (TokenExpiredException e) {
+          response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+          response.setContentType("application/json");
+          response.getWriter().write(String.format(
+                  "{\"httpStatus\": \"UNAUTHORIZED\", \"message\": \"Token expired at %s\"}",
+                  e.getExpiredOn()
+          ));
+          return;
+        } catch (Exception e) {
+          response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+          response.setContentType("application/json");
+          response.getWriter().write("{\"error\": \"Authenticate Failed\"}");
+          return;
         }
       }
       filterChain.doFilter(request, response);

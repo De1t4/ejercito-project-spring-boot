@@ -1,8 +1,7 @@
 package ejercito.demo.service.soldier;
 
-import ejercito.demo.models.Assignment;
 import ejercito.demo.models.Soldier;
-import ejercito.demo.service.Assignment.DataRequestAssignment;
+import ejercito.demo.service.assignment.dto.request.DataRequestAssignment;
 
 import java.util.List;
 

@@ -8,18 +8,15 @@ import ejercito.demo.service.barrack.DataRegisterBarrack;
 import ejercito.demo.service.barrack.DataResponseBarrack;
 import ejercito.demo.service.barrack.DataUpdateBarrack;
 import ejercito.demo.service.barrack.ServiceBarrack;
-import ejercito.demo.service.company.DataRegisterCompany;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.xml.crypto.Data;
 import java.net.URI;
 import java.util.List;
 
@@ -35,7 +32,7 @@ public class BarrackController {
   private ServiceBarrack serviceBarrack;
 
   @GetMapping
-  public ResponseEntity<List<Barrack>> getBarracksList(){
+  public ResponseEntity<List<Barrack>> getBarracksList() {
     return ResponseEntity.ok(barrackRepository.findAll());
   }
 
@@ -45,7 +42,7 @@ public class BarrackController {
   }
 
   @PostMapping
-  public ResponseEntity<DataResponseBarrack> createBarrack(@RequestBody  DataRegisterBarrack dataRegisterBarrack, UriComponentsBuilder uriComponentsBuilder){
+  public ResponseEntity<DataResponseBarrack> createBarrack(@RequestBody DataRegisterBarrack dataRegisterBarrack, UriComponentsBuilder uriComponentsBuilder) {
     Barrack barrack = serviceBarrack.createBarrackWithData(dataRegisterBarrack);
     URI url = uriComponentsBuilder.path("/companies/{id}").buildAndExpand(barrack.getId_barrack()).toUri();
     return ResponseEntity.created(url).body(createDataBarrack(barrack));
@@ -60,12 +57,12 @@ public class BarrackController {
 
   @DeleteMapping("/{id}")
   @Transactional
-  public ResponseEntity deleteBarrack(@PathVariable @NotNull Long id){
+  public ResponseEntity deleteBarrack(@PathVariable @NotNull Long id) {
     serviceBarrack.deleteBarrackById(id);
     return ResponseEntity.noContent().build();
   }
 
-  private DataResponseBarrack createDataBarrack(Barrack barrack){
+  private DataResponseBarrack createDataBarrack(Barrack barrack) {
     return new DataResponseBarrack(barrack.getId_barrack(), barrack.getName(), barrack.getLocation());
   }
 }

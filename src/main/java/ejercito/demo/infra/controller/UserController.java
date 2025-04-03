@@ -20,14 +20,14 @@ public class UserController {
   private UserRepository userRepository;
 
   @GetMapping
-  public ResponseEntity<List<DataListUser>> getListUser(){
+  public ResponseEntity<List<DataListUser>> getListUser() {
     return ResponseEntity.ok(createDataUser(userRepository.findAll()));
   }
 
-  private List<DataListUser> createDataUser(List<User> users){
+  private List<DataListUser> createDataUser(List<User> users) {
     return users.stream().
-              map(user -> new DataListUser(user.getId_user(), user.getUsername(), user.getRole()))
-                .collect(Collectors.toList());
+            map(user -> new DataListUser(user.getId_user(), user.getUsername(), user.getRole()))
+            .collect(Collectors.toList());
   }
 
 }

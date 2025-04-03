@@ -1,11 +1,17 @@
 package ejercito.demo.infra.controller;
 
 import ejercito.demo.infra.mapper.AssignmentMapper;
-import ejercito.demo.infra.mapper.SoldierMapper;
 import ejercito.demo.models.Assignment;
 import ejercito.demo.models.Services;
-import ejercito.demo.service.Assignment.*;
+import ejercito.demo.service.assignment.*;
+import ejercito.demo.service.assignment.dto.request.DataBothServiceAndAssignment;
+import ejercito.demo.service.assignment.dto.request.DataRegisterSoldierAssignment;
+import ejercito.demo.service.assignment.dto.request.DataRequestFinishAssignment;
+import ejercito.demo.service.assignment.dto.response.DataFinishResponseAssignment;
+import ejercito.demo.service.assignment.dto.response.DataResponseAssignment;
+import ejercito.demo.service.assignment.dto.response.DataResponseBothServiceAndAssignment;
 import ejercito.demo.service.soldier.DataResponseSoldierBasic;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +23,7 @@ import java.util.List;
 
 
 @RestController
+@SecurityRequirement(name = "bearer-key")
 @RequestMapping("/v1")
 public class AssignmentController {
 
@@ -49,8 +56,8 @@ public class AssignmentController {
   }
 
   @PutMapping("/services/finish/assignments")
-  public ResponseEntity<List<DataFinishResponseAssignment>> finishServiceAssigned(@RequestBody DataFinishAssignment dataFinishAssignment) {
-    return ResponseEntity.ok(assignmentService.finishServiceAssigned(dataFinishAssignment.id_services_soldiers()));
+  public ResponseEntity<List<DataFinishResponseAssignment>> finishServiceAssigned(@RequestBody DataRequestFinishAssignment dataRequestFinishAssignment) {
+    return ResponseEntity.ok(assignmentService.finishServiceAssigned(dataRequestFinishAssignment.id_services_soldiers()));
   }
 
 

@@ -31,8 +31,8 @@ public class WebSecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
             .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register", "/auth/**").permitAll()
-                    .requestMatchers(HttpMethod.PUT, "/v1/services/finish/assignments").hasAnyRole("SOLDADO", "SUB_OFICIAL", "OFICIAL")
                     .requestMatchers(HttpMethod.GET, "/v1/**").hasAnyRole("SOLDADO", "SUB_OFICIAL", "OFICIAL")
+                    .requestMatchers(HttpMethod.PUT, "/v1/services/finish/assignments").hasAnyRole("SOLDADO", "SUB_OFICIAL", "OFICIAL")
                     .requestMatchers(HttpMethod.PUT, "/v1/profile/update").hasAnyRole("SUB_OFICIAL", "OFICIAL", "SOLDADO")
                     .requestMatchers(HttpMethod.POST, "/v1/**").hasAnyRole("SUB_OFICIAL", "OFICIAL")
                     .requestMatchers(HttpMethod.PUT, "/v1/**").hasAnyRole("SUB_OFICIAL", "OFICIAL")

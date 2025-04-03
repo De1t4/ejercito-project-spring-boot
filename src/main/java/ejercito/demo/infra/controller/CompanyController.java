@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.net.URL;
 import java.util.List;
 
 @RestController
@@ -33,7 +32,7 @@ public class CompanyController {
   private ServiceCompany serviceCompany;
 
   @GetMapping
-  public ResponseEntity<List<Company>> getCompaniesList(){
+  public ResponseEntity<List<Company>> getCompaniesList() {
     return ResponseEntity.ok(companyRepository.findAll());
   }
 
@@ -51,20 +50,20 @@ public class CompanyController {
 
   @PutMapping
   @Transactional
-  public ResponseEntity<DataResponseCompany> modifyCompany(@RequestBody @Valid DataUpdateCompany dataUpdateCompany){
+  public ResponseEntity<DataResponseCompany> modifyCompany(@RequestBody @Valid DataUpdateCompany dataUpdateCompany) {
     Company company = serviceCompany.updateCompany(dataUpdateCompany);
     return ResponseEntity.ok(dataResponseCompany(company));
   }
 
   @DeleteMapping("/{id}")
   @Transactional
-  public ResponseEntity deleteCompany(@PathVariable @Valid Long id){
+  public ResponseEntity deleteCompany(@PathVariable @Valid Long id) {
     serviceCompany.getCompanyById(id);
     companyRepository.deleteById(id);
     return ResponseEntity.noContent().build();
   }
 
-  private DataResponseCompany dataResponseCompany(Company company){
+  private DataResponseCompany dataResponseCompany(Company company) {
     return new DataResponseCompany(company.getId_company(), company.getActivity());
   }
 }

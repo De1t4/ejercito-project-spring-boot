@@ -1,4 +1,4 @@
-package ejercito.demo.service.Assignment;
+package ejercito.demo.service.assignment.dto.response;
 
 import java.time.LocalDateTime;
 

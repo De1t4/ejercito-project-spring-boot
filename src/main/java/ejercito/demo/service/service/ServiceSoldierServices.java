@@ -4,7 +4,6 @@ import ejercito.demo.infra.errors.BadRequestException;
 import ejercito.demo.infra.errors.NotFoundException;
 import ejercito.demo.infra.repository.ServiceRepository;
 import ejercito.demo.models.Services;
-import ejercito.demo.models.Soldier;
 import ejercito.demo.service.soldier.ServiceSoldier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,13 +14,9 @@ public class ServiceSoldierServices {
   @Autowired
   private ServiceRepository serviceRepository;
 
-  @Autowired
-  private ServiceSoldier serviceSoldier;
-
   public Services getServiceById(Long id) {
     return findService(id);
   }
-
 
   public Services createService(DataRegisterService dataRegisterService) {
     return serviceRepository.save(new Services(dataRegisterService));
@@ -32,7 +27,6 @@ public class ServiceSoldierServices {
     services.updateDataService(dataUpdateServices);
     return services;
   }
-
 
   private Services findService(Long id) throws NotFoundException {
     return serviceRepository.findById(id)

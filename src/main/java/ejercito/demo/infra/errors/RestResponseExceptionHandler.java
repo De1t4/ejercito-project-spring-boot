@@ -60,4 +60,10 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     ErrorMessage errorMessage = new ErrorMessage(HttpStatus.UNAUTHORIZED, exception.getMessage());
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
   }
+
+  @ExceptionHandler(value = BussinessException.class)
+  public ResponseEntity<ErrorMessage> handleBusinessException(BussinessException exception) {
+    ErrorMessage errorMessage = new ErrorMessage(exception.getHttpStatus(), exception.getMessage());
+    return ResponseEntity.status(exception.getHttpStatus()).body(errorMessage);
+  }
 }

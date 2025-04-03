@@ -1,8 +1,8 @@
 package ejercito.demo.infra.mapper;
 
 import ejercito.demo.models.*;
-import ejercito.demo.service.Assignment.DataAssignment;
-import ejercito.demo.service.Assignment.DataRequestAssignment;
+import ejercito.demo.service.assignment.dto.response.DataResponseSoldierAssignment;
+import ejercito.demo.service.assignment.dto.request.DataRequestAssignment;
 import ejercito.demo.service.profile.DataStatusService;
 import ejercito.demo.service.profile.DataStatusServicesProfile;
 import ejercito.demo.service.soldier.DataResponseSoldier;
@@ -66,11 +66,11 @@ public class SoldierMapper {
     );
   }
 
-  public DataAssignment toDataSoldierWithServices(List<Assignment> assignments, Soldier soldier) {
+  public DataResponseSoldierAssignment toDataSoldierWithServices(List<Assignment> assignments, Soldier soldier) {
     if (assignments == null) {
-      return new DataAssignment(toDataSoldier(soldier), null);
+      return new DataResponseSoldierAssignment(toDataSoldier(soldier), null);
     }
     List<DataRequestAssignment> dataRequestAssignments = toDataServicesSoldier(assignments);
-    return new DataAssignment(toDataSoldier(soldier), dataRequestAssignments);
+    return new DataResponseSoldierAssignment(toDataSoldier(soldier), dataRequestAssignments);
   }
 }

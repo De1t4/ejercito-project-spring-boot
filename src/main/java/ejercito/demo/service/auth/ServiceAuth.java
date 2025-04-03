@@ -18,7 +18,7 @@ public class ServiceAuth {
   @Autowired
   private TokenService tokenService;
 
-  public String login(DataLoginUser dataLoginUser) throws NotFoundException{
+  public String login(DataLoginUser dataLoginUser) throws NotFoundException {
     validateFields(dataLoginUser.username(), "USERNAME");
     validateFields(dataLoginUser.password(), "PASSWORD");
     User user = findUsername(dataLoginUser.username());

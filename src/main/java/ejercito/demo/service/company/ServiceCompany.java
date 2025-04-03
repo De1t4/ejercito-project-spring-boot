@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.util.Optional;
 
 @Service
@@ -19,14 +18,14 @@ public class ServiceCompany {
 
   public Company getCompanyById(Long id) throws NotFoundException {
     Optional<Company> company = companyRepository.findById(id);
-    if(!company.isPresent()){
+    if (!company.isPresent()) {
       throw new NotFoundException("NOT FOUND WITH ID " + id + " COMPANY");
     }
     return company.get();
   }
 
-  public Company createCompanyData(DataRegisterCompany dataRegisterCompany) throws BadRequestException{
-    if(dataRegisterCompany.activity() == null && dataRegisterCompany.activity().isEmpty()){
+  public Company createCompanyData(DataRegisterCompany dataRegisterCompany) throws BadRequestException {
+    if (dataRegisterCompany.activity() == null && dataRegisterCompany.activity().isEmpty()) {
       throw new BadRequestException("NOT FOUND FIELD ACTIVITY");
     }
     return new Company(dataRegisterCompany);
@@ -41,11 +40,11 @@ public class ServiceCompany {
     return company;
   }
 
-  private boolean existCompany(Long id) throws NotFoundException{
-      Optional<Company> company = companyRepository.findById(id);
-      if(!company.isPresent()) {
-        throw new NotFoundException("NOT FOUND WITH ID " + id + " COMPANY");
-      }
-      return true;
+  private boolean existCompany(Long id) throws NotFoundException {
+    Optional<Company> company = companyRepository.findById(id);
+    if (!company.isPresent()) {
+      throw new NotFoundException("NOT FOUND WITH ID " + id + " COMPANY");
+    }
+    return true;
   }
 }

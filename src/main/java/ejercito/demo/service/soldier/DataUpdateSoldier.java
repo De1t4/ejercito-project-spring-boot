@@ -4,5 +4,5 @@ import jakarta.validation.constraints.NotNull;
 
 import java.sql.Date;
 
-public record DataUpdateSoldier(DataResponseSoldier dataResponseSoldier, @NotNull Long id_soldier, String name, String lastname, Date graduation) {
+public record DataUpdateSoldier(@NotNull Long id_soldier, String name, String lastname, Date graduation, Long id_company, Long id_barrack, Long id_body) {
 }

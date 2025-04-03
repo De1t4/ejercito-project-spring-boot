@@ -1,16 +1,13 @@
 package ejercito.demo.service.profile;
 
-import ejercito.demo.infra.errors.BadRequestException;
 import ejercito.demo.infra.errors.NotFoundException;
 import ejercito.demo.infra.mapper.SoldierMapper;
-import ejercito.demo.infra.repository.AssignmentRepository;
 import ejercito.demo.infra.repository.UserRepository;
 import ejercito.demo.models.Assignment;
 import ejercito.demo.models.User;
-import ejercito.demo.service.Assignment.AssignmentService;
+import ejercito.demo.service.assignment.AssignmentService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +21,6 @@ public class ServiceProfile {
 
   @Autowired
   private AssignmentService assignmentService;
-
-  @Autowired
-  private AssignmentRepository assignmentRepository;
 
   @Autowired
   private SoldierMapper soldierMapper;

@@ -1,4 +1,4 @@
-package ejercito.demo.service.Assignment;
+package ejercito.demo.service.assignment.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

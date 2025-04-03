@@ -4,10 +4,11 @@ import ejercito.demo.infra.errors.NotFoundException;
 import ejercito.demo.infra.mapper.SoldierMapper;
 import ejercito.demo.infra.repository.SoldierRepository;
 import ejercito.demo.models.*;
-import ejercito.demo.service.Assignment.AssignmentService;
-import ejercito.demo.service.Assignment.DataAssignment;
+import ejercito.demo.service.assignment.AssignmentService;
+import ejercito.demo.service.assignment.dto.response.DataResponseSoldierAssignment;
 import ejercito.demo.service.soldier.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
@@ -24,6 +25,7 @@ import java.util.List;
 @RestController
 @SecurityRequirement(name = "bearer-key")
 @RequestMapping("/v1/soldiers")
+@Tag(name = "Soldier")
 @Validated
 public class SoldierController {
 
@@ -45,7 +47,7 @@ public class SoldierController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<DataAssignment> getSoldierById(@PathVariable("id") @Positive @NumberFormat Long id) throws NotFoundException {
+  public ResponseEntity<DataResponseSoldierAssignment> getSoldierById(@PathVariable("id") @Positive @NumberFormat Long id) throws NotFoundException {
     List<Assignment> assignmentList = assignmentService.getLisServicesByIdSoldier(id);
     Soldier soldier = serviceSoldier.getSoldierById(id);
     return ResponseEntity.ok(soldierMapper.toDataSoldierWithServices(assignmentList, soldier));
@@ -61,8 +63,7 @@ public class SoldierController {
   @PutMapping
   @Transactional
   public ResponseEntity<DataResponseSoldier> modifySoldier(@RequestBody @Valid DataUpdateSoldier dataUpdateSoldier) {
-    Soldier soldier = soldierRepository.getReferenceById(dataUpdateSoldier.id_soldier());
-    soldier.updateDataSoldier(dataUpdateSoldier);
+    Soldier soldier = serviceSoldier.updateSoldier(dataUpdateSoldier);
     return ResponseEntity.ok(soldierMapper.toDataSoldier(soldier));
   }
 

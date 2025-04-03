@@ -1,10 +1,6 @@
 package ejercito.demo.infra.controller;
 
-import ejercito.demo.infra.mapper.SoldierMapper;
-import ejercito.demo.infra.repository.UserRepository;
-import ejercito.demo.models.Assignment;
 import ejercito.demo.models.User;
-import ejercito.demo.service.Assignment.AssignmentService;
 import ejercito.demo.service.profile.DataResponseProfile;
 import ejercito.demo.service.profile.DataUpdateProfile;
 import ejercito.demo.service.profile.ServiceProfile;
@@ -14,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @SecurityRequirement(name = "bearer-key")
@@ -23,12 +18,6 @@ public class ProfileController {
 
   @Autowired
   private ServiceProfile serviceProfile;
-
-  @Autowired
-  private AssignmentService assignmentService;
-
-  @Autowired
-  private SoldierMapper soldierMapper;
 
   @GetMapping("/find")
   public ResponseEntity<DataResponseProfile> getProfileUser(Authentication token) {

@@ -2,7 +2,7 @@ package ejercito.demo.infra.mapper;
 
 import ejercito.demo.models.Assignment;
 import ejercito.demo.models.Services;
-import ejercito.demo.service.Assignment.DataResponseAssignment;
+import ejercito.demo.service.assignment.dto.response.DataResponseAssignment;
 import ejercito.demo.service.soldier.DataResponseSoldierBasic;
 import org.springframework.stereotype.Component;
 

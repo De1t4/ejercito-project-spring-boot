@@ -7,8 +7,7 @@ public record DataRegisterUserWithSoldier(
         String username,
         @NotBlank
         String password,
-        DataRegisterSoldier dataRegisterSoldier
-
+        DataRegisterSoldier soldier
 ) {
 
 }

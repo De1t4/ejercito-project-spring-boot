@@ -25,7 +25,7 @@ public class Barrack {
     this.location = location;
   }
 
-  public Barrack(DataRegisterBarrack dataRegisterBarrack){
+  public Barrack(DataRegisterBarrack dataRegisterBarrack) {
     this.name = dataRegisterBarrack.name();
     this.location = dataRegisterBarrack.location();
   }
@@ -45,11 +45,11 @@ public class Barrack {
     return location;
   }
 
-  public void updateDataSoldier(DataUpdateBarrack dataUpdateBarrack) {
-    if(dataUpdateBarrack.name() != null){
+  public void updateDataBarrack(DataUpdateBarrack dataUpdateBarrack) {
+    if (dataUpdateBarrack.name() != null) {
       this.name = dataUpdateBarrack.name();
     }
-    if(dataUpdateBarrack.location() != null){
+    if (dataUpdateBarrack.location() != null) {
       this.location = dataUpdateBarrack.location();
     }
   }

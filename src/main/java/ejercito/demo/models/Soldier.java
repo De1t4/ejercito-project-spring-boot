@@ -83,4 +83,16 @@ public class Soldier {
   public Date getGraduation() {
     return graduation;
   }
+
+  public void setBarrack(Barrack barrack) {
+    this.barrack = barrack;
+  }
+
+  public void setCompany(Company company) {
+    this.company = company;
+  }
+
+  public void setBody(Body body) {
+    this.body = body;
+  }
 }

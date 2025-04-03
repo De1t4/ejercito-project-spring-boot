@@ -11,9 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
-import java.util.Objects;
-
 @Service
 public class ServiceUser {
 
@@ -23,11 +20,8 @@ public class ServiceUser {
   @Autowired
   private UserRepository userRepository;
 
-  @Autowired
-  private ServiceSoldier serviceSoldier;
-
-  public User createUser( DataRegisterUser dataRegisterUser) throws Exception{
-    if (userRepository.findByUsername(dataRegisterUser.username()).isPresent()){
+  public User createUser(DataRegisterUser dataRegisterUser) throws Exception {
+    if (userRepository.findByUsername(dataRegisterUser.username()).isPresent()) {
       throw new DuplicateException("THE USER " + dataRegisterUser.username() + " HAS ALREADY BEEN REGISTERED");
     }
 

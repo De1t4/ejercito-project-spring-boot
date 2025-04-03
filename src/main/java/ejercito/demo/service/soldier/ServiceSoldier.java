@@ -5,10 +5,17 @@ import ejercito.demo.infra.errors.DuplicateException;
 import ejercito.demo.infra.errors.NotFoundException;
 import ejercito.demo.infra.repository.*;
 import ejercito.demo.models.*;
+import ejercito.demo.service.barrack.ServiceBarrack;
+import ejercito.demo.service.body.ServiceBody;
+import ejercito.demo.service.company.ServiceCompany;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServiceSoldier {
@@ -16,19 +23,16 @@ public class ServiceSoldier {
   private SoldierRepository soldierRepository;
 
   @Autowired
-  private CompanyRepository companyRepository;
+  private ServiceBarrack serviceBarrack;
 
   @Autowired
-  private BarrackRepository barrackRepository;
+  private ServiceCompany serviceCompany;
 
   @Autowired
-  private BodyRepository bodyRepository;
+  private ServiceBody serviceBody;
 
   @Autowired
   private UserRepository userRepository;
-
-  @Autowired
-  private AssignmentRepository assignmentRepository;
 
   public Soldier getUserByName(String name) {
     return soldierRepository.findByName(name);
@@ -39,26 +43,25 @@ public class ServiceSoldier {
     validateFields(dataRegisterSoldier.password(), "password");
 
     if (userRepository.findByUsername(dataRegisterSoldier.username()).isPresent()) {
-      throw new DuplicateException("THE USER HAS " + dataRegisterSoldier.username() + " ALREADY BEEN REGISTERED");
+      throw new DuplicateException("THE USER " + dataRegisterSoldier.username() + " HAS ALREADY BEEN REGISTERED");
     }
 
-    if (dataRegisterSoldier.dataRegisterSoldier() == null) {
+    if (dataRegisterSoldier.soldier() == null) {
       throw new BadRequestException("Not found object dataRegisterSoldier");
     }
 
-    validateFields(dataRegisterSoldier.dataRegisterSoldier().name(), "name");
-    validateFields(dataRegisterSoldier.dataRegisterSoldier().lastname(), "lastname");
-    validateFieldIDs(dataRegisterSoldier.dataRegisterSoldier().id_company(), "id_company");
-    validateFieldIDs(dataRegisterSoldier.dataRegisterSoldier().id_barrack(), "id_barrack");
-    validateFieldIDs(dataRegisterSoldier.dataRegisterSoldier().id_body(), "id_body");
+    validateFields(dataRegisterSoldier.soldier().name(), "name");
+    validateFields(dataRegisterSoldier.soldier().lastname(), "lastname");
+    validateFieldIDs(dataRegisterSoldier.soldier().id_company(), "id_company");
+    validateFieldIDs(dataRegisterSoldier.soldier().id_barrack(), "id_barrack");
+    validateFieldIDs(dataRegisterSoldier.soldier().id_body(), "id_body");
 
-    Company company = companyRepository.findById(dataRegisterSoldier.dataRegisterSoldier().id_company()).orElseThrow(() -> new RuntimeException("Company not found"));
-    ;
-    Barrack barrack = barrackRepository.findById(dataRegisterSoldier.dataRegisterSoldier().id_barrack()).orElseThrow(() -> new RuntimeException("Barrack not found"));
-    Body body = bodyRepository.findById(dataRegisterSoldier.dataRegisterSoldier().id_body()).orElseThrow(() -> new RuntimeException("Army body not found "));
+    Company company = serviceCompany.getCompanyById(dataRegisterSoldier.soldier().id_company());
+    Barrack barrack = serviceBarrack.getBarrackById(dataRegisterSoldier.soldier().id_barrack());
+    Body body = serviceBody.getBodyById(dataRegisterSoldier.soldier().id_body());
 
 
-    Soldier soldier = soldierRepository.save(new Soldier(dataRegisterSoldier.dataRegisterSoldier(), company, barrack, body));
+    Soldier soldier = soldierRepository.save(new Soldier(dataRegisterSoldier.soldier(), company, barrack, body));
     userRepository.save(new User(dataRegisterSoldier, soldier));
     return soldier;
   }
@@ -103,5 +106,25 @@ public class ServiceSoldier {
   public void deleteById(Long id) {
     findSoldierById(id);
     soldierRepository.deleteById(id);
+  }
+
+  public Soldier updateSoldier(DataUpdateSoldier dataUpdateSoldier) {
+    Soldier soldier = findSoldierById(dataUpdateSoldier.id_soldier());
+    if(dataUpdateSoldier.id_barrack() != null){
+      Barrack barrack = serviceBarrack.getBarrackById(dataUpdateSoldier.id_barrack());
+      soldier.setBarrack(barrack);
+    }
+
+    if(dataUpdateSoldier.id_company() != null){
+      Company company = serviceCompany.getCompanyById(dataUpdateSoldier.id_company());
+      soldier.setCompany(company);
+    }
+    if(dataUpdateSoldier.id_body() != null){
+      Body body = serviceBody.getBodyById(dataUpdateSoldier.id_body());
+      soldier.setBody(body);
+    }
+
+    soldier.updateDataSoldier(dataUpdateSoldier);
+    return soldierRepository.save(soldier);
   }
 }

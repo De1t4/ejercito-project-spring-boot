@@ -2,7 +2,6 @@ package ejercito.demo.models;
 
 import ejercito.demo.service.company.DataRegisterCompany;
 import ejercito.demo.service.company.DataUpdateCompany;
-import ejercito.demo.service.soldier.DataUpdateSoldier;
 import jakarta.persistence.*;
 import lombok.*;
 
