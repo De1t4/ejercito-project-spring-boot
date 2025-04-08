@@ -8,6 +8,7 @@ import ejercito.demo.models.Services;
 import ejercito.demo.models.Soldier;
 import ejercito.demo.service.assignment.dto.request.DataBothServiceAndAssignment;
 import ejercito.demo.service.assignment.dto.request.DataRegisterSoldierAssignment;
+import ejercito.demo.service.assignment.dto.response.DataAllServicesAssignment;
 import ejercito.demo.service.assignment.dto.response.DataFinishResponseAssignment;
 import ejercito.demo.service.service.DataRegisterService;
 import ejercito.demo.service.service.ServiceSoldierServices;
@@ -50,7 +51,7 @@ public class AssignmentService {
     return assignmentRepository.saveAll(assignments);
   }
 
-  public List<Assignment> getLisServicesByIdSoldier(Long id_soldier) {
+  public List<Assignment> getListServicesByIdSoldier(Long id_soldier) {
     return assignmentRepository.findBySoldierId(id_soldier);
   }
 
@@ -67,6 +68,7 @@ public class AssignmentService {
 
   @Transactional
   public List<DataFinishResponseAssignment> finishServiceAssigned(List<Long> ids) {
+
     validateListSoldiers(ids);
     List<Assignment> assignments = getAssignmentByIds(ids);
     for (Assignment assignment : assignments) {
@@ -84,6 +86,12 @@ public class AssignmentService {
     if (ids == null || ids.isEmpty()) {
       throw new BadRequestException("ARRAY LIST IS EMPTY OR NULL");
     }
+
+    for (Long id : ids) {
+      if (id == null) {
+        throw new BadRequestException("THE LIST ARRAY HAS NULL VALUE");
+      }
+    }
   }
 
   public List<Assignment> getAssignmentByIds(List<Long> ids) {
@@ -95,4 +103,11 @@ public class AssignmentService {
             .orElseThrow(() -> new NotFoundException("Assignment with ID " + id + " not found"));
   }
 
+  public List<DataAllServicesAssignment> getAllServicesAssigned() {
+    List<Assignment> assignmentList = assignmentRepository.findAll();
+    return assignmentList.stream()
+            .map(service ->
+                    new DataAllServicesAssignment(service.getId_services_soldiers(), service.getServices().getDescription(), service.getSoldier().getId_soldier(), service.getSoldier().getName(), service.getAt_service(), service.getEnd_service()))
+            .collect(Collectors.toList());
+  }
 }

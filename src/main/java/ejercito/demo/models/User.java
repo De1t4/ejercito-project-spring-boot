@@ -101,8 +101,8 @@ public class User implements UserDetails {
   }
 
   public void updateProfile(DataUpdateProfile dataUpdateProfile) {
-    if(dataUpdateProfile.password() != null){
-      this.password = new BCryptPasswordEncoder().encode(dataUpdateProfile.password());
+    if(dataUpdateProfile.newPassword() != null){
+      this.password = new BCryptPasswordEncoder().encode(dataUpdateProfile.newPassword());
     }
   }
 }

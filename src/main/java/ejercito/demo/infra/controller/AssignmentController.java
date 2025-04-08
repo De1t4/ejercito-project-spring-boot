@@ -7,6 +7,7 @@ import ejercito.demo.service.assignment.*;
 import ejercito.demo.service.assignment.dto.request.DataBothServiceAndAssignment;
 import ejercito.demo.service.assignment.dto.request.DataRegisterSoldierAssignment;
 import ejercito.demo.service.assignment.dto.request.DataRequestFinishAssignment;
+import ejercito.demo.service.assignment.dto.response.DataAllServicesAssignment;
 import ejercito.demo.service.assignment.dto.response.DataFinishResponseAssignment;
 import ejercito.demo.service.assignment.dto.response.DataResponseAssignment;
 import ejercito.demo.service.assignment.dto.response.DataResponseBothServiceAndAssignment;
@@ -24,7 +25,7 @@ import java.util.List;
 
 @RestController
 @SecurityRequirement(name = "bearer-key")
-@RequestMapping("/v1")
+@RequestMapping("/v1/admin")
 public class AssignmentController {
 
   @Autowired
@@ -32,6 +33,12 @@ public class AssignmentController {
 
   @Autowired
   private AssignmentMapper assignmentMapper;
+
+  @GetMapping("/services/assignments")
+  public ResponseEntity<List<DataAllServicesAssignment>> getAllServicesAssigned(){
+    List<DataAllServicesAssignment> dataAllServicesAssignments = assignmentService.getAllServicesAssigned();
+    return ResponseEntity.ok(dataAllServicesAssignments);
+  }
 
   @GetMapping("/services/{id}/assignments")
   public ResponseEntity<DataResponseAssignment> getServiceAssignedSoldiers(@PathVariable @Valid Long id) {

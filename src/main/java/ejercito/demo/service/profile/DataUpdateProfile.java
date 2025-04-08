@@ -1,5 +1,7 @@
 package ejercito.demo.service.profile;
 
 
-public record DataUpdateProfile(String password) {
+import jakarta.validation.constraints.NotBlank;
+
+public record DataUpdateProfile(@NotBlank String currentPassword, @NotBlank String newPassword) {
 }

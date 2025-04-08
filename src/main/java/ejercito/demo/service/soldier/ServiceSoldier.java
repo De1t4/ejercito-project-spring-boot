@@ -8,14 +8,13 @@ import ejercito.demo.models.*;
 import ejercito.demo.service.barrack.ServiceBarrack;
 import ejercito.demo.service.body.ServiceBody;
 import ejercito.demo.service.company.ServiceCompany;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.xml.crypto.Data;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ServiceSoldier {
@@ -47,7 +46,7 @@ public class ServiceSoldier {
     }
 
     if (dataRegisterSoldier.soldier() == null) {
-      throw new BadRequestException("Not found object dataRegisterSoldier");
+      throw new BadRequestException("Not found object soldier");
     }
 
     validateFields(dataRegisterSoldier.soldier().name(), "name");
@@ -110,21 +109,50 @@ public class ServiceSoldier {
 
   public Soldier updateSoldier(DataUpdateSoldier dataUpdateSoldier) {
     Soldier soldier = findSoldierById(dataUpdateSoldier.id_soldier());
-    if(dataUpdateSoldier.id_barrack() != null){
+    if (dataUpdateSoldier.id_barrack() != null) {
       Barrack barrack = serviceBarrack.getBarrackById(dataUpdateSoldier.id_barrack());
       soldier.setBarrack(barrack);
     }
 
-    if(dataUpdateSoldier.id_company() != null){
+    if (dataUpdateSoldier.id_company() != null) {
       Company company = serviceCompany.getCompanyById(dataUpdateSoldier.id_company());
       soldier.setCompany(company);
     }
-    if(dataUpdateSoldier.id_body() != null){
+    if (dataUpdateSoldier.id_body() != null) {
       Body body = serviceBody.getBodyById(dataUpdateSoldier.id_body());
       soldier.setBody(body);
     }
 
     soldier.updateDataSoldier(dataUpdateSoldier);
     return soldierRepository.save(soldier);
+  }
+
+  public List<DataManageSoldier> getListSoldiersAll() {
+    List<User> userList = userRepository.getListUsersSoldiers();
+
+    return userList.stream()
+            .map(user -> {
+              Soldier soldier = user.getSoldier();
+              if (soldier == null) {
+                return new DataManageSoldier(
+                        user.getId_user(),
+                        null,
+                        user.getUsername(),
+                        null, null, null, null, null
+                );
+              } else {
+                return new DataManageSoldier(
+                        user.getId_user(),
+                        soldier.getId_soldier(),
+                        user.getUsername(),
+                        soldier.getName(),
+                        soldier.getLastname(),
+                        soldier.getBarrack().getName(),
+                        soldier.getCompany().getActivity(),
+                        soldier.getBody().getDenomination()
+                );
+              }
+            })
+            .collect(Collectors.toList());
   }
 }

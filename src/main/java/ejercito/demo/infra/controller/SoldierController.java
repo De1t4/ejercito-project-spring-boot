@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -42,13 +43,14 @@ public class SoldierController {
   private SoldierMapper soldierMapper;
 
   @GetMapping
-  public ResponseEntity<List<Soldier>> getSoldiersList() {
-    return ResponseEntity.ok(soldierRepository.findAll());
+  public ResponseEntity<List<DataManageSoldier>> getSoldiersList() {
+    List<DataManageSoldier> soldierList = serviceSoldier.getListSoldiersAll();
+    return ResponseEntity.ok(soldierList);
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<DataResponseSoldierAssignment> getSoldierById(@PathVariable("id") @Positive @NumberFormat Long id) throws NotFoundException {
-    List<Assignment> assignmentList = assignmentService.getLisServicesByIdSoldier(id);
+    List<Assignment> assignmentList = assignmentService.getListServicesByIdSoldier(id);
     Soldier soldier = serviceSoldier.getSoldierById(id);
     return ResponseEntity.ok(soldierMapper.toDataSoldierWithServices(assignmentList, soldier));
   }
