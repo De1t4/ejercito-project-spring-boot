@@ -5,5 +5,5 @@ import ejercito.demo.service.soldier.DataResponseSoldier;
 
 import java.util.List;
 
-public record DataResponseSoldierAssignment(DataResponseSoldier dataResponseSoldier, List<DataRequestAssignment> services) {
+public record DataResponseSoldierAssignment(DataResponseSoldier user, List<DataRequestAssignment> services) {
 }

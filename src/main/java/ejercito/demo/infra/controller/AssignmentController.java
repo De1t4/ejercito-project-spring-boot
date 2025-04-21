@@ -15,6 +15,9 @@ import ejercito.demo.service.soldier.DataResponseSoldierBasic;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,8 +38,8 @@ public class AssignmentController {
   private AssignmentMapper assignmentMapper;
 
   @GetMapping("/services/assignments")
-  public ResponseEntity<List<DataAllServicesAssignment>> getAllServicesAssigned(){
-    List<DataAllServicesAssignment> dataAllServicesAssignments = assignmentService.getAllServicesAssigned();
+  public ResponseEntity<Page<DataAllServicesAssignment>> getAllServicesAssigned(@PageableDefault(size = 10) Pageable pageable){
+    Page<DataAllServicesAssignment> dataAllServicesAssignments = assignmentService.getAllServicesAssigned(pageable);
     return ResponseEntity.ok(dataAllServicesAssignments);
   }
 

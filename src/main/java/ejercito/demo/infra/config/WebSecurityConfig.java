@@ -1,4 +1,5 @@
 package ejercito.demo.infra.config;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,13 +32,16 @@ public class WebSecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
             .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register", "/auth/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/v1/**").hasAnyRole("SOLDADO", "SUB_OFICIAL", "OFICIAL")
-                    .requestMatchers(HttpMethod.PUT, "/v1/services/finish/assignments").hasAnyRole("SOLDADO", "SUB_OFICIAL", "OFICIAL")
+                    .requestMatchers(HttpMethod.GET, "/v1/soldier/**").hasRole("SOLDADO")
+                    .requestMatchers(HttpMethod.GET, "/v1/services/**").hasRole("SOLDADO")
+                    .requestMatchers(HttpMethod.GET, "/v1/profile/**").hasAnyRole("SOLDADO", "SUB_OFICIAL", "OFICIAL")
+                    .requestMatchers(HttpMethod.GET, "/v1/**").hasAnyRole("SUB_OFICIAL", "OFICIAL")
+                    .requestMatchers(HttpMethod.PUT, "/v1/admin/services/finish/assignments").hasAnyRole("SOLDADO", "SUB_OFICIAL", "OFICIAL")
                     .requestMatchers(HttpMethod.PUT, "/v1/profile/update").hasAnyRole("SUB_OFICIAL", "OFICIAL", "SOLDADO")
                     .requestMatchers(HttpMethod.POST, "/v1/**").hasAnyRole("SUB_OFICIAL", "OFICIAL")
                     .requestMatchers(HttpMethod.PUT, "/v1/**").hasAnyRole("SUB_OFICIAL", "OFICIAL")
                     .requestMatchers(HttpMethod.DELETE, "/v1/**").hasAnyRole("SUB_OFICIAL", "OFICIAL")
-                    .requestMatchers("/swagger-ui/**", "/swagger-ui.html" ,"/v3/api-docs/**", "/swagger-resources/**", "/error").permitAll()
+                    .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-resources/**", "/error").permitAll()
                     .anyRequest().authenticated()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

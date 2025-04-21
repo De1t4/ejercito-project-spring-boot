@@ -138,7 +138,7 @@ public class ServiceSoldier {
                         user.getId_user(),
                         null,
                         user.getUsername(),
-                        null, null, null, null, null
+                        null, null, null, null, null, null, null, null
                 );
               } else {
                 return new DataManageSoldier(
@@ -147,8 +147,11 @@ public class ServiceSoldier {
                         user.getUsername(),
                         soldier.getName(),
                         soldier.getLastname(),
+                        soldier.getBarrack().getId_barrack(),
                         soldier.getBarrack().getName(),
+                        soldier.getCompany().getId_company(),
                         soldier.getCompany().getActivity(),
+                        soldier.getBody().getId_body(),
                         soldier.getBody().getDenomination()
                 );
               }

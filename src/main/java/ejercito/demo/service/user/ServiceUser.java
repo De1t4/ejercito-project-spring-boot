@@ -2,14 +2,23 @@ package ejercito.demo.service.user;
 
 import ejercito.demo.infra.errors.BadRequestException;
 import ejercito.demo.infra.errors.DuplicateException;
+import ejercito.demo.infra.errors.NotFoundException;
+import ejercito.demo.infra.mapper.SoldierMapper;
 import ejercito.demo.infra.repository.SoldierRepository;
 import ejercito.demo.infra.repository.UserRepository;
+import ejercito.demo.models.Assignment;
 import ejercito.demo.models.Soldier;
 import ejercito.demo.models.User;
+import ejercito.demo.service.assignment.AssignmentService;
+import ejercito.demo.service.assignment.dto.response.DataResponseSoldierAssignment;
+import ejercito.demo.service.profile.DataResponseProfile;
 import ejercito.demo.service.soldier.ServiceSoldier;
+import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ServiceUser {
@@ -19,6 +28,13 @@ public class ServiceUser {
 
   @Autowired
   private UserRepository userRepository;
+
+  @Autowired
+  private AssignmentService assignmentService;
+
+  @Autowired
+  private SoldierMapper soldierMapper;
+
 
   public User createUser(DataRegisterUser dataRegisterUser) throws Exception {
     if (userRepository.findByUsername(dataRegisterUser.username()).isPresent()) {
@@ -34,4 +50,21 @@ public class ServiceUser {
     return userRepository.save(new User(dataRegisterUser));
   }
 
+  public DataResponseProfile getUserProfile( Long id_user) {
+    User user = findUserById(id_user);
+    if (user.getSoldier() == null) {
+      return new DataResponseProfile(user.getId_user(), user.getUsername(), user.getPassword(), user.getRole(), null, null);
+    }
+    List<Assignment> assignmentList = assignmentService.getListServicesByIdSoldier(user.getSoldier().getId_soldier());
+    return new DataResponseProfile(user.getId_user(), user.getUsername(), user.getPassword(), user.getRole(), user.getSoldier(), soldierMapper.toOrderServicesForStatus(assignmentList));
+  }
+
+  private User findUserById(Long id_user) {
+    if (id_user == null) {
+      throw new BadRequestException("THE ID CANNOT BE NULL");
+    }
+
+    return userRepository.findById(id_user)
+            .orElseThrow(() -> new NotFoundException("User with ID " + id_user + " not found"));
+  }
 }

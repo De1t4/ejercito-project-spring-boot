@@ -15,6 +15,8 @@ import ejercito.demo.service.service.ServiceSoldierServices;
 import ejercito.demo.service.soldier.ServiceSoldier;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -103,11 +105,17 @@ public class AssignmentService {
             .orElseThrow(() -> new NotFoundException("Assignment with ID " + id + " not found"));
   }
 
-  public List<DataAllServicesAssignment> getAllServicesAssigned() {
-    List<Assignment> assignmentList = assignmentRepository.findAll();
-    return assignmentList.stream()
-            .map(service ->
-                    new DataAllServicesAssignment(service.getId_services_soldiers(), service.getServices().getDescription(), service.getSoldier().getId_soldier(), service.getSoldier().getName(), service.getAt_service(), service.getEnd_service()))
-            .collect(Collectors.toList());
+  public Page<DataAllServicesAssignment> getAllServicesAssigned(Pageable pageable) {
+    Page<Assignment> assignmentPage = assignmentRepository.findAll(pageable);
+    return assignmentPage.map(service ->
+            new DataAllServicesAssignment(
+                    service.getId_services_soldiers(),
+                    service.getServices().getDescription(),
+                    service.getSoldier().getId_soldier(),
+                    service.getSoldier().getName() + " " + service.getSoldier().getLastname(),
+                    service.getAt_service(),
+                    service.getEnd_service()
+            )
+    );
   }
 }
