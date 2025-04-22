@@ -35,7 +35,6 @@ public class ServiceUser {
   @Autowired
   private SoldierMapper soldierMapper;
 
-
   public User createUser(DataRegisterUser dataRegisterUser) throws Exception {
     if (userRepository.findByUsername(dataRegisterUser.username()).isPresent()) {
       throw new DuplicateException("THE USER " + dataRegisterUser.username() + " HAS ALREADY BEEN REGISTERED");
@@ -59,12 +58,19 @@ public class ServiceUser {
     return new DataResponseProfile(user.getId_user(), user.getUsername(), user.getPassword(), user.getRole(), user.getSoldier(), soldierMapper.toOrderServicesForStatus(assignmentList));
   }
 
-  private User findUserById(Long id_user) {
+  public User findUserById(Long id_user) {
     if (id_user == null) {
       throw new BadRequestException("THE ID CANNOT BE NULL");
     }
 
     return userRepository.findById(id_user)
             .orElseThrow(() -> new NotFoundException("User with ID " + id_user + " not found"));
+  }
+
+  public void deleteUsersList(List<Long> idsSoldier) {
+    for(Long id: idsSoldier){
+      findUserById(id);
+    }
+    userRepository.deleteAllById(idsSoldier);
   }
 }

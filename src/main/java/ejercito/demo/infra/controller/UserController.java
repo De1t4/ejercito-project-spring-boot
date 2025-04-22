@@ -43,6 +43,12 @@ public class UserController {
     return ResponseEntity.ok(serviceUser.getUserProfile(id));
   }
 
+  @DeleteMapping("/delete")
+  public ResponseEntity deleteUserList(@RequestBody List<Long> ids_soldier){
+    serviceUser.deleteUsersList(ids_soldier);
+    return ResponseEntity.noContent().build();
+  }
+
   private List<DataListUser> createDataUser(List<User> users) {
     return users.stream().
             map(user -> new DataListUser(user.getId_user(), user.getUsername(), user.getRole()))
