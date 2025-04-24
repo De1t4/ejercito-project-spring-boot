@@ -10,6 +10,7 @@ import ejercito.demo.service.company.DataResponseCompany;
 import ejercito.demo.service.company.DataUpdateCompany;
 import ejercito.demo.service.company.ServiceCompany;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @RestController
 @SecurityRequirement(name = "bearer-key")
+@Tag(name = "Companies")
 @RequestMapping("/v1/companies")
 public class CompanyController {
 

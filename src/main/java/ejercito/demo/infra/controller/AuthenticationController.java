@@ -7,6 +7,7 @@ import ejercito.demo.service.auth.DataTokenJWT;
 import ejercito.demo.service.auth.ServiceAuth;
 import ejercito.demo.service.user.DataRegisterUser;
 import ejercito.demo.service.user.ServiceUser;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @RestController
+@Tag(name = "Authentication")
 @RequestMapping("/auth")
 public class AuthenticationController {
 

@@ -4,6 +4,7 @@ import ejercito.demo.infra.repository.ServiceRepository;
 import ejercito.demo.models.Services;
 import ejercito.demo.service.service.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RestController
 @SecurityRequirement(name = "bearer-key")
+@Tag(name = "Services")
 @RequestMapping("/v1/services")
 public class ServiceController {
 

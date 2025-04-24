@@ -36,7 +36,7 @@ public class WebSecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/v1/services/**").hasAnyRole("SOLDADO", "SUB_OFICIAL", "OFICIAL")
                     .requestMatchers(HttpMethod.GET, "/v1/profile/**").hasAnyRole("SOLDADO", "SUB_OFICIAL", "OFICIAL")
                     .requestMatchers(HttpMethod.GET, "/v1/**").hasAnyRole("SUB_OFICIAL", "OFICIAL")
-                    .requestMatchers(HttpMethod.PUT, "/v1/admin/services/finish/assignments").hasAnyRole("SOLDADO", "SUB_OFICIAL", "OFICIAL")
+                    .requestMatchers(HttpMethod.PUT, "/v1/services/finish/assignments").hasAnyRole("SOLDADO", "SUB_OFICIAL", "OFICIAL")
                     .requestMatchers(HttpMethod.PUT, "/v1/profile/update").hasAnyRole("SUB_OFICIAL", "OFICIAL", "SOLDADO")
                     .requestMatchers(HttpMethod.POST, "/v1/**").hasAnyRole("SUB_OFICIAL", "OFICIAL")
                     .requestMatchers(HttpMethod.PUT, "/v1/**").hasAnyRole("SUB_OFICIAL", "OFICIAL")

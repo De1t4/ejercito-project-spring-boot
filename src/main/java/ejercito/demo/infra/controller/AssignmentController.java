@@ -14,6 +14,7 @@ import ejercito.demo.service.assignment.dto.response.DataResponseAssignment;
 import ejercito.demo.service.assignment.dto.response.DataResponseBothServiceAndAssignment;
 import ejercito.demo.service.soldier.DataResponseSoldierBasic;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,7 +30,8 @@ import java.util.List;
 
 @RestController
 @SecurityRequirement(name = "bearer-key")
-@RequestMapping("/v1/admin")
+@Tag(name = "Assignment")
+@RequestMapping("/v1")
 public class AssignmentController {
 
   @Autowired
@@ -75,6 +77,12 @@ public class AssignmentController {
   @PutMapping("/services/finish/assignments")
   public ResponseEntity<List<DataFinishResponseAssignment>> finishServiceAssigned(@RequestBody DataRequestFinishAssignment dataRequestFinishAssignment) {
     return ResponseEntity.ok(assignmentService.finishServiceAssigned(dataRequestFinishAssignment.id_services_soldiers()));
+  }
+
+  @DeleteMapping("/services/deleted/assignments")
+  public ResponseEntity deletedServiceAssignment(@RequestBody @Valid List<Long> ids_assignments){
+
+    return ResponseEntity.noContent().build();
   }
 
 

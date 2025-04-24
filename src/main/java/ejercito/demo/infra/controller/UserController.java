@@ -11,6 +11,7 @@ import ejercito.demo.service.profile.DataResponseProfile;
 import ejercito.demo.service.user.DataListUser;
 import ejercito.demo.service.user.ServiceUser;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 @RestController
 @SecurityRequirement(name = "bearer-key")
 @RequestMapping("/v1/users")
+@Tag(name = "User")
 @Validated
 public class UserController {
 

@@ -7,6 +7,7 @@ import ejercito.demo.service.body.DataResponseBody;
 import ejercito.demo.service.body.DataUpdateBody;
 import ejercito.demo.service.body.ServiceBody;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.List;
 @RestController
 @SecurityRequirement(name = "bearer-key")
 @RequestMapping("/v1/bodies")
+@Tag(name = "Army Bodies")
 public class BodyController {
 
   @Autowired

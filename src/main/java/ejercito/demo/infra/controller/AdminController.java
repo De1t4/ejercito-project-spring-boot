@@ -6,6 +6,7 @@ import ejercito.demo.service.admin.DataStructureAdmin;
 import ejercito.demo.service.admin.ServiceAdmin;
 import ejercito.demo.service.assignment.dto.response.DataAllServicesAssignment;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @SecurityRequirement(name = "bearer-key")
+@Tag(name = "Admin")
 @RequestMapping("/v1/admin")
 public class AdminController {
 
