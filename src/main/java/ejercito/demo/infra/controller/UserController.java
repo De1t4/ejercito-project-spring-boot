@@ -13,6 +13,9 @@ import ejercito.demo.service.user.ServiceUser;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -39,15 +42,17 @@ public class UserController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<DataResponseProfile> getUserProfile(@PathVariable @Positive @NumberFormat Long id){
+  public ResponseEntity<DataResponseProfile> getUserProfile(@PathVariable @Positive @NumberFormat Long id) {
     return ResponseEntity.ok(serviceUser.getUserProfile(id));
   }
 
   @DeleteMapping("/delete")
-  public ResponseEntity deleteUserList(@RequestBody List<Long> ids_soldier){
+  public ResponseEntity deleteUserList(@RequestBody List<Long> ids_soldier) {
     serviceUser.deleteUsersList(ids_soldier);
     return ResponseEntity.noContent().build();
   }
+
+
 
   private List<DataListUser> createDataUser(List<User> users) {
     return users.stream().

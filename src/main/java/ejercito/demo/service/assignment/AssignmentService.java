@@ -8,6 +8,7 @@ import ejercito.demo.models.Services;
 import ejercito.demo.models.Soldier;
 import ejercito.demo.service.assignment.dto.request.DataBothServiceAndAssignment;
 import ejercito.demo.service.assignment.dto.request.DataRegisterSoldierAssignment;
+import ejercito.demo.service.assignment.dto.request.DataUpdateAssignment;
 import ejercito.demo.service.assignment.dto.response.DataAllServicesAssignment;
 import ejercito.demo.service.assignment.dto.response.DataFinishResponseAssignment;
 import ejercito.demo.service.service.DataRegisterService;
@@ -101,6 +102,7 @@ public class AssignmentService {
   }
 
   private Assignment findServiceAssigned(Long id) throws NotFoundException {
+
     return assignmentRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("Assignment with ID " + id + " not found"));
   }
@@ -114,8 +116,40 @@ public class AssignmentService {
                     service.getSoldier().getId_soldier(),
                     service.getSoldier().getName() + " " + service.getSoldier().getLastname(),
                     service.getAt_service(),
-                    service.getEnd_service()
+                    service.getEnd_service(),
+                    service.getServices().getId_service()
             )
+    );
+  }
+
+  @Transactional
+  public DataFinishResponseAssignment updateServiceAssigned(Long id, DataUpdateAssignment dataUpdateAssignment) {
+    if(id == null){
+      throw  new BadRequestException("Assignment id is null");
+    }
+    Assignment assignment = findServiceAssigned(id);
+    if (dataUpdateAssignment.id_service() != null) {
+      Services service = serviceSoldierServices.getServiceById(dataUpdateAssignment.id_service());
+      assignment.updateService(service);
+      assignmentRepository.save(assignment);
+      return createDataFinishResponse(assignment);
+    } else if (dataUpdateAssignment.description() != null) {
+      DataRegisterService dataRegisterService = new DataRegisterService(dataUpdateAssignment.description());
+      Services newService = serviceSoldierServices.createService(dataRegisterService);
+      assignment.updateService(newService);
+      assignmentRepository.save(assignment);
+      return createDataFinishResponse(assignment);
+    } else {
+      return createDataFinishResponse(assignment);
+    }
+  }
+  private DataFinishResponseAssignment createDataFinishResponse(Assignment assignment) {
+    return new DataFinishResponseAssignment(
+            assignment.getId_services_soldiers(),
+            assignment.getId_services_soldiers(), // ¿Seguro que estos dos IDs son siempre iguales?
+            assignment.getEnd_service(),
+            assignment.getAt_service(),
+            assignment.getServices().getDescription()
     );
   }
 }

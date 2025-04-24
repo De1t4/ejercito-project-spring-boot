@@ -35,7 +35,7 @@ public class ServiceAdmin {
   private AssignmentRepository assignmentRepository;
 
   public DataGeneralAdmin getDataGeneralSystem() {
-    int totalSoldier = soldierRepository.findAll().size();
+    int totalSoldier = userRepository.getListUsersSoldiers().size();
     int totalServices = assignmentRepository.findAll().size();
     int servicesCompleted = assignmentRepository.getAssignmentsCompleted().size();
     int servicesPending = assignmentRepository.getAssignmentsPending().size();

@@ -1,5 +1,6 @@
 package ejercito.demo.models;
 
+import ejercito.demo.service.assignment.dto.request.DataUpdateAssignment;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -70,5 +71,9 @@ public class Assignment {
 
   public LocalDateTime getEnd_service() {
     return end_service;
+  }
+
+  public void updateService(Services service) {
+    this.services = service;
   }
 }

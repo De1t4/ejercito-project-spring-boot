@@ -7,6 +7,7 @@ import ejercito.demo.service.assignment.*;
 import ejercito.demo.service.assignment.dto.request.DataBothServiceAndAssignment;
 import ejercito.demo.service.assignment.dto.request.DataRegisterSoldierAssignment;
 import ejercito.demo.service.assignment.dto.request.DataRequestFinishAssignment;
+import ejercito.demo.service.assignment.dto.request.DataUpdateAssignment;
 import ejercito.demo.service.assignment.dto.response.DataAllServicesAssignment;
 import ejercito.demo.service.assignment.dto.response.DataFinishResponseAssignment;
 import ejercito.demo.service.assignment.dto.response.DataResponseAssignment;
@@ -64,6 +65,12 @@ public class AssignmentController {
     }
     return ResponseEntity.ok(dataResponseAssignmentList);
   }
+
+  @PutMapping("/services/{id}/assignments")
+  public ResponseEntity<DataFinishResponseAssignment> updateServiceAssigned(@PathVariable Long id, @RequestBody DataUpdateAssignment dataUpdateAssignment){
+    return ResponseEntity.ok(assignmentService.updateServiceAssigned(id, dataUpdateAssignment));
+  }
+
 
   @PutMapping("/services/finish/assignments")
   public ResponseEntity<List<DataFinishResponseAssignment>> finishServiceAssigned(@RequestBody DataRequestFinishAssignment dataRequestFinishAssignment) {
