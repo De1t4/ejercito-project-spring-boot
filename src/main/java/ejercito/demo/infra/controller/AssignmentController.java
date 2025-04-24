@@ -81,9 +81,8 @@ public class AssignmentController {
 
   @DeleteMapping("/services/deleted/assignments")
   public ResponseEntity deletedServiceAssignment(@RequestBody @Valid List<Long> ids_assignments){
-
+    assignmentService.deletedServiceAssignment(ids_assignments);
     return ResponseEntity.noContent().build();
   }
-
 
 }

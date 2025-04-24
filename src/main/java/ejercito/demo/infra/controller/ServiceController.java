@@ -33,7 +33,6 @@ public class ServiceController {
     return ResponseEntity.ok(createDataListServices(serviceRepository.findAll()));
   }
 
-
   @GetMapping("/{id}")
   public ResponseEntity<DataResponseService> getServiceById(@PathVariable Long id) {
     return ResponseEntity.ok(createDataService(serviceSoldierServices.getServiceById(id)));
@@ -46,13 +45,11 @@ public class ServiceController {
     return ResponseEntity.created(url).body(createDataService(services));
   }
 
-
   @PutMapping
   @Transactional
   public ResponseEntity<DataResponseService> modifyServiceWithSolder(@RequestBody DataUpdateServices dataUpdateServices) {
     return ResponseEntity.ok(createDataService(serviceSoldierServices.modifyServices(dataUpdateServices)));
   }
-
 
   @DeleteMapping("/{id}")
   @Transactional

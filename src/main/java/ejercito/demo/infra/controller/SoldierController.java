@@ -55,6 +55,11 @@ public class SoldierController {
     return ResponseEntity.ok(soldierMapper.toDataSoldierWithServices(assignmentList, soldier));
   }
 
+  @GetMapping("/search")
+  public ResponseEntity<Soldier> searchSoldierByName(@RequestParam(value = "name") String name) {
+    return ResponseEntity.ok(serviceSoldier.searchSoldierByName(name));
+  }
+
   @PostMapping
   public ResponseEntity<Soldier> createSoldier(@RequestBody DataRegisterUserWithSoldier dataRegisterSoldier, UriComponentsBuilder uriComponentsBuilder) {
     Soldier soldier = serviceSoldier.createSoldierWithData(dataRegisterSoldier);
@@ -75,11 +80,5 @@ public class SoldierController {
     serviceSoldier.deleteById(id);
     return ResponseEntity.noContent().build();
   }
-
-  @GetMapping("/search")
-  public ResponseEntity<Soldier> searchSoldierByName(@RequestParam(value = "name") String name) {
-    return ResponseEntity.ok(serviceSoldier.searchSoldierByName(name));
-  }
-
 
 }

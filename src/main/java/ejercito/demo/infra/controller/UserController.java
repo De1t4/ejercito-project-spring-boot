@@ -54,8 +54,6 @@ public class UserController {
     return ResponseEntity.noContent().build();
   }
 
-
-
   private List<DataListUser> createDataUser(List<User> users) {
     return users.stream().
             map(user -> new DataListUser(user.getId_user(), user.getUsername(), user.getRole()))

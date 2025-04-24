@@ -15,6 +15,7 @@ import ejercito.demo.service.service.DataRegisterService;
 import ejercito.demo.service.service.ServiceSoldierServices;
 import ejercito.demo.service.soldier.ServiceSoldier;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -102,7 +103,6 @@ public class AssignmentService {
   }
 
   private Assignment findServiceAssigned(Long id) throws NotFoundException {
-
     return assignmentRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("Assignment with ID " + id + " not found"));
   }
@@ -151,5 +151,12 @@ public class AssignmentService {
             assignment.getAt_service(),
             assignment.getServices().getDescription()
     );
+  }
+
+  public void deletedServiceAssignment(@Valid List<Long> idsAssignments) {
+    for (Long id: idsAssignments){
+      findServiceAssigned(id);
+    }
+    assignmentRepository.deleteAllById(idsAssignments);
   }
 }
