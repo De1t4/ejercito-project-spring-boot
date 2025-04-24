@@ -56,24 +56,34 @@ public class ServiceAdmin {
     return new DataStructureAdmin(companies, bodies, barracks);
   }
 
-  public Page<DataGeneralSoldiersAdmin> getAllSoldiersData(Pageable pageable) {
+  public Page<DataGeneralSoldiersAdmin> getAllSoldiersData(Pageable pageable, String search) {
+    if (search != null) {
+      Page<User> soldierListFounded = userRepository.getPageSoldiersFounded(pageable, search);
+      return mapDataGeneralSoldier(soldierListFounded);
+    }
     Page<User> soldiersList = userRepository.getPageUsersSoldiers(pageable);
+    return mapDataGeneralSoldier(soldiersList);
+  }
+
+  public Page<DataGeneralSoldiersAdmin> mapDataGeneralSoldier(Page<User> soldiersList) {
     return soldiersList.map(user -> {
       Soldier soldier = user.getSoldier();
-      return new DataGeneralSoldiersAdmin(
-              user.getId_user(),
-              soldier.getId_soldier(),
-              user.getUsername(),
-              soldier.getName(),
-              soldier.getLastname(),
-              soldier.getBarrack().getId_barrack(),
-              soldier.getBarrack().getName(),
-              soldier.getCompany().getId_company(),
-              soldier.getCompany().getActivity(),
-              soldier.getBody().getId_body(),
-              soldier.getBody().getDenomination()
-      );
+      return
+              new DataGeneralSoldiersAdmin(
+                      user.getId_user(),
+                      soldier.getId_soldier(),
+                      user.getUsername(),
+                      soldier.getName(),
+                      soldier.getLastname(),
+                      soldier.getBarrack().getId_barrack(),
+                      soldier.getBarrack().getName(),
+                      soldier.getCompany().getId_company(),
+                      soldier.getCompany().getActivity(),
+                      soldier.getBody().getId_body(),
+                      soldier.getBody().getDenomination()
+              );
     });
   }
+
 
 }

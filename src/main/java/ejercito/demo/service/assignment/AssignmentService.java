@@ -107,19 +107,13 @@ public class AssignmentService {
             .orElseThrow(() -> new NotFoundException("Assignment with ID " + id + " not found"));
   }
 
-  public Page<DataAllServicesAssignment> getAllServicesAssigned(Pageable pageable) {
+  public Page<DataAllServicesAssignment> getAllServicesAssigned(Pageable pageable, String search) {
+    if(search != null){
+      Page<Assignment> assignmentsPage = assignmentRepository.findAllAssignments(pageable, search);
+      return mapDataServices(assignmentsPage);
+    }
     Page<Assignment> assignmentPage = assignmentRepository.findAll(pageable);
-    return assignmentPage.map(service ->
-            new DataAllServicesAssignment(
-                    service.getId_services_soldiers(),
-                    service.getServices().getDescription(),
-                    service.getSoldier().getId_soldier(),
-                    service.getSoldier().getName() + " " + service.getSoldier().getLastname(),
-                    service.getAt_service(),
-                    service.getEnd_service(),
-                    service.getServices().getId_service()
-            )
-    );
+    return mapDataServices(assignmentPage);
   }
 
   @Transactional
@@ -158,5 +152,19 @@ public class AssignmentService {
       findServiceAssigned(id);
     }
     assignmentRepository.deleteAllById(idsAssignments);
+  }
+
+  public Page<DataAllServicesAssignment> mapDataServices(Page<Assignment> assignmentPage){
+    return assignmentPage.map(service ->
+            new DataAllServicesAssignment(
+                    service.getId_services_soldiers(),
+                    service.getServices().getDescription(),
+                    service.getSoldier().getId_soldier(),
+                    service.getSoldier().getName() + " " + service.getSoldier().getLastname(),
+                    service.getAt_service(),
+                    service.getEnd_service(),
+                    service.getServices().getId_service()
+            )
+    );
   }
 }

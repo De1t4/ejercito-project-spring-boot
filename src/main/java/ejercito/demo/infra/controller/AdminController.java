@@ -14,6 +14,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,8 +37,8 @@ public class AdminController {
   }
 
   @GetMapping("/general-data-soldiers")
-  private ResponseEntity<Page<DataGeneralSoldiersAdmin>> getDataSoldier(@PageableDefault(size = 10) Pageable pageable){
-    Page<DataGeneralSoldiersAdmin> dataGeneralSoldiers = serviceAdmin.getAllSoldiersData(pageable);
+  private ResponseEntity<Page<DataGeneralSoldiersAdmin>> getDataSoldier(@RequestParam(required = false) String search, @PageableDefault(size = 10) Pageable pageable){
+    Page<DataGeneralSoldiersAdmin> dataGeneralSoldiers = serviceAdmin.getAllSoldiersData(pageable, search);
     return ResponseEntity.ok(dataGeneralSoldiers);
   }
 }

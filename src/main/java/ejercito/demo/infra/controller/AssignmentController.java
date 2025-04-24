@@ -41,8 +41,8 @@ public class AssignmentController {
   private AssignmentMapper assignmentMapper;
 
   @GetMapping("/services/assignments")
-  public ResponseEntity<Page<DataAllServicesAssignment>> getAllServicesAssigned(@PageableDefault(size = 10) Pageable pageable){
-    Page<DataAllServicesAssignment> dataAllServicesAssignments = assignmentService.getAllServicesAssigned(pageable);
+  public ResponseEntity<Page<DataAllServicesAssignment>> getAllServicesAssigned(@RequestParam(required = false) String search, @PageableDefault(size = 10) Pageable pageable){
+    Page<DataAllServicesAssignment> dataAllServicesAssignments = assignmentService.getAllServicesAssigned(pageable, search);
     return ResponseEntity.ok(dataAllServicesAssignments);
   }
 
