@@ -14,12 +14,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @SecurityRequirement(name = "bearer-key")
@@ -34,8 +38,8 @@ public class CompanyController {
   private ServiceCompany serviceCompany;
 
   @GetMapping
-  public ResponseEntity<List<Company>> getCompaniesList() {
-    return ResponseEntity.ok(companyRepository.findAll());
+  public ResponseEntity<Page<Company>> getCompaniesList(@PageableDefault(size = 10)Pageable pageable) {
+    return ResponseEntity.ok(companyRepository.findAll(pageable));
   }
 
   @GetMapping("/{id}")
@@ -57,11 +61,10 @@ public class CompanyController {
     return ResponseEntity.ok(dataResponseCompany(company));
   }
 
-  @DeleteMapping("/{id}")
+  @DeleteMapping("/delete")
   @Transactional
-  public ResponseEntity deleteCompany(@PathVariable @Valid Long id) {
-    serviceCompany.getCompanyById(id);
-    companyRepository.deleteById(id);
+  public ResponseEntity deleteCompany(@RequestBody @Valid Set<Long> ids) {
+    serviceCompany.deleteById(ids);
     return ResponseEntity.noContent().build();
   }
 

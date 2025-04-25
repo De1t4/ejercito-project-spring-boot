@@ -10,12 +10,16 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @SecurityRequirement(name = "bearer-key")
@@ -30,8 +34,8 @@ public class BodyController {
   private ServiceBody serviceBody;
 
   @GetMapping
-  public ResponseEntity<List<Body>> getBodiesArmyList() {
-    return ResponseEntity.ok(bodyRepository.findAll());
+  public ResponseEntity<Page<Body>> getBodiesArmyList(@PageableDefault(size = 10)Pageable pageable) {
+    return ResponseEntity.ok(bodyRepository.findAll(pageable));
   }
 
   @GetMapping("/{id}")
@@ -51,9 +55,9 @@ public class BodyController {
     return ResponseEntity.ok(createDataBodyArmy(serviceBody.modifyBodyArmy(dataUpdateBody)));
   }
 
-  @DeleteMapping("/{id}")
-  public ResponseEntity<ProjectInfoProperties.Build> deleteBodyArmy(@PathVariable Long id) {
-    serviceBody.deleteBodyArmy(id);
+  @DeleteMapping("/delete")
+  public ResponseEntity<ProjectInfoProperties.Build> deleteBodyArmy(@RequestBody Set<Long> ids) {
+    serviceBody.deleteBodyArmy(ids);
     return ResponseEntity.noContent().build();
   }
 

@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class ServiceBody {
@@ -29,9 +31,14 @@ public class ServiceBody {
   }
 
   @Transactional
-  public void deleteBodyArmy(Long id) {
-    Body body = findBodyArmy(id);
-    bodyRepository.deleteById(body.getId_body());
+  public void deleteBodyArmy(Set<Long> idBodies) {
+    if(idBodies.isEmpty()){
+      throw new BadRequestException("List Army Bodies is empty");
+    }
+    for(Long id: idBodies){
+     findBodyArmy(id);
+    }
+    bodyRepository.deleteAllById(idBodies);
   }
 
   public Body createBodyArmy(DataRegisterBody dataRegisterBody) {

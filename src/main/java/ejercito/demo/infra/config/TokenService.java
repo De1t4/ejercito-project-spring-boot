@@ -44,7 +44,7 @@ public class TokenService {
     DecodedJWT decodedJWT = JWT.decode(token);
 
     if (isJWTExpired(decodedJWT)) {
-      throw new TokenExpiredException("Token expirado", decodedJWT.getExpiresAt().toInstant());
+      throw new TokenExpiredException("Token expired", decodedJWT.getExpiresAt().toInstant());
     }
 
     Algorithm algorithm = Algorithm.HMAC256(API_SECRET);

@@ -8,6 +8,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Set;
+
 @Service
 public class ServiceBarrack {
 
@@ -34,12 +37,15 @@ public class ServiceBarrack {
     return barrack;
   }
 
-  public void deleteBarrackById(@Valid Long idBarrack) throws BadRequestException {
-    if (idBarrack == null) {
-      throw new BadRequestException("NOT FOUND FIELD ID_BARRACK");
+  public void deleteBarrackByIds(Set<Long> idBarracks) throws BadRequestException {
+    if(idBarracks.isEmpty() ){
+      throw new BadRequestException("List barracks is empty");
     }
-    findBarrackOrThrow(idBarrack);
-    barrackRepository.deleteById(idBarrack);
+
+    for(Long id : idBarracks){
+      findBarrackOrThrow(id);
+    }
+    barrackRepository.deleteAllById(idBarracks);
   }
 
   private Barrack findBarrackOrThrow(Long idBarrack) {

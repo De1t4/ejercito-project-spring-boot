@@ -14,12 +14,16 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @SecurityRequirement(name = "bearer-key")
@@ -34,8 +38,8 @@ public class BarrackController {
   private ServiceBarrack serviceBarrack;
 
   @GetMapping
-  public ResponseEntity<List<Barrack>> getBarracksList() {
-    return ResponseEntity.ok(barrackRepository.findAll());
+  public ResponseEntity<Page<Barrack>> getBarracksList(@PageableDefault(size = 10)Pageable pageable) {
+    return ResponseEntity.ok(barrackRepository.findAll(pageable));
   }
 
   @GetMapping("/{id}")
@@ -57,10 +61,10 @@ public class BarrackController {
     return ResponseEntity.ok(createDataBarrack(barrack));
   }
 
-  @DeleteMapping("/{id}")
+  @DeleteMapping("/delete")
   @Transactional
-  public ResponseEntity deleteBarrack(@PathVariable @NotNull Long id) {
-    serviceBarrack.deleteBarrackById(id);
+  public ResponseEntity deleteBarrack(@RequestBody @NotNull Set<Long> ids) {
+    serviceBarrack.deleteBarrackByIds(ids);
     return ResponseEntity.noContent().build();
   }
 
