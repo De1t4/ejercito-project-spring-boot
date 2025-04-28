@@ -1,10 +1,6 @@
 package ejercito.demo.infra.controller;
 
-import ejercito.demo.service.admin.DataGeneralAdmin;
-import ejercito.demo.service.admin.DataGeneralSoldiersAdmin;
-import ejercito.demo.service.admin.DataStructureAdmin;
-import ejercito.demo.service.admin.ServiceAdmin;
-import ejercito.demo.service.assignment.dto.response.DataAllServicesAssignment;
+import ejercito.demo.service.admin.*;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

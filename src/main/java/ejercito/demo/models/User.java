@@ -2,6 +2,7 @@ package ejercito.demo.models;
 
 import ejercito.demo.service.profile.DataUpdateProfile;
 import ejercito.demo.service.soldier.DataRegisterUserWithSoldier;
+import ejercito.demo.service.subOfficial.DataCreateSubOfficial;
 import ejercito.demo.service.user.DataRegisterUser;
 import jakarta.persistence.*;
 import lombok.*;
@@ -52,6 +53,13 @@ public class User implements UserDetails {
     this.username = dataRegisterSoldier.username();
     this.password = new BCryptPasswordEncoder().encode(dataRegisterSoldier.password());
     this.role = "SOLDADO";
+    this.soldier = soldier;
+  }
+
+  public User(DataCreateSubOfficial dataCreateSubOfficial , Soldier soldier) {
+    this.username = dataCreateSubOfficial.username();
+    this.password = new BCryptPasswordEncoder().encode(dataCreateSubOfficial.password());
+    this.role = "SUB_OFICIAL";
     this.soldier = soldier;
   }
 

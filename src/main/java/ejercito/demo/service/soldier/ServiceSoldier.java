@@ -54,13 +54,7 @@ public class ServiceSoldier {
     validateFieldIDs(dataRegisterSoldier.soldier().id_company(), "id_company");
     validateFieldIDs(dataRegisterSoldier.soldier().id_barrack(), "id_barrack");
     validateFieldIDs(dataRegisterSoldier.soldier().id_body(), "id_body");
-
-    Company company = serviceCompany.getCompanyById(dataRegisterSoldier.soldier().id_company());
-    Barrack barrack = serviceBarrack.getBarrackById(dataRegisterSoldier.soldier().id_barrack());
-    Body body = serviceBody.getBodyById(dataRegisterSoldier.soldier().id_body());
-
-
-    Soldier soldier = soldierRepository.save(new Soldier(dataRegisterSoldier.soldier(), company, barrack, body));
+    Soldier soldier = createSoldierData(dataRegisterSoldier.soldier());
     userRepository.save(new User(dataRegisterSoldier, soldier));
     return soldier;
   }
@@ -157,5 +151,12 @@ public class ServiceSoldier {
               }
             })
             .collect(Collectors.toList());
+  }
+
+  public Soldier createSoldierData (DataRegisterSoldier soldier){
+    Company company = serviceCompany.getCompanyById(soldier.id_company());
+    Barrack barrack = serviceBarrack.getBarrackById(soldier.id_barrack());
+    Body body = serviceBody.getBodyById(soldier.id_body());
+    return  soldierRepository.save(new Soldier(soldier, company, barrack, body));
   }
 }
