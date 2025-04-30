@@ -51,9 +51,7 @@ public class ServiceSoldier {
 
     validateFields(dataRegisterSoldier.soldier().name(), "name");
     validateFields(dataRegisterSoldier.soldier().lastname(), "lastname");
-    validateFieldIDs(dataRegisterSoldier.soldier().id_company(), "id_company");
-    validateFieldIDs(dataRegisterSoldier.soldier().id_barrack(), "id_barrack");
-    validateFieldIDs(dataRegisterSoldier.soldier().id_body(), "id_body");
+
     Soldier soldier = createSoldierData(dataRegisterSoldier.soldier());
     userRepository.save(new User(dataRegisterSoldier, soldier));
     return soldier;
@@ -154,6 +152,10 @@ public class ServiceSoldier {
   }
 
   public Soldier createSoldierData (DataRegisterSoldier soldier){
+    validateFieldIDs(soldier.id_company(), "id_company");
+    validateFieldIDs(soldier.id_barrack(), "id_barrack");
+    validateFieldIDs(soldier.id_body(), "id_body");
+
     Company company = serviceCompany.getCompanyById(soldier.id_company());
     Barrack barrack = serviceBarrack.getBarrackById(soldier.id_barrack());
     Body body = serviceBody.getBodyById(soldier.id_body());

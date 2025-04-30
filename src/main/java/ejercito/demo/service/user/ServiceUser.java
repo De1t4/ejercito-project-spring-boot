@@ -7,20 +7,14 @@ import ejercito.demo.infra.mapper.SoldierMapper;
 import ejercito.demo.infra.repository.SoldierRepository;
 import ejercito.demo.infra.repository.UserRepository;
 import ejercito.demo.models.Assignment;
-import ejercito.demo.models.Soldier;
 import ejercito.demo.models.User;
 import ejercito.demo.service.assignment.AssignmentService;
-import ejercito.demo.service.assignment.dto.response.DataResponseSoldierAssignment;
 import ejercito.demo.service.profile.DataResponseProfile;
-import ejercito.demo.service.soldier.ServiceSoldier;
-import jakarta.validation.constraints.Positive;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ServiceUser {
@@ -69,7 +63,7 @@ public class ServiceUser {
             .orElseThrow(() -> new NotFoundException("User with ID " + id_user + " not found"));
   }
 
-  public void deleteUsersList(List<Long> idsSoldier) {
+  public void deleteUsersList(Set<Long> idsSoldier) {
     for(Long id: idsSoldier){
       findUserById(id);
     }

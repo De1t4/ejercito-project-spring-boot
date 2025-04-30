@@ -72,12 +72,12 @@ public class ServiceAdmin {
                       user.getUsername(),
                       soldier.getName(),
                       soldier.getLastname(),
-                      soldier.getBarrack().getId_barrack(),
-                      soldier.getBarrack().getName(),
-                      soldier.getCompany().getId_company(),
-                      soldier.getCompany().getActivity(),
-                      soldier.getBody().getId_body(),
-                      soldier.getBody().getDenomination()
+                      soldier.getBarrack() == null ? null : soldier.getBarrack().getId_barrack(),
+                      soldier.getBarrack() == null ? null : soldier.getBarrack().getName(),
+                      soldier.getCompany() == null ? null : soldier.getCompany().getId_company(),
+                      soldier.getCompany() == null ? null : soldier.getCompany().getActivity(),
+                      soldier.getBody() == null ? null : soldier.getBody().getId_body(),
+                      soldier.getBody() == null ? null : soldier.getBody().getDenomination()
               );
     });
   }

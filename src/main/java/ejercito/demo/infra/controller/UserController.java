@@ -23,6 +23,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -49,7 +50,7 @@ public class UserController {
   }
 
   @DeleteMapping("/delete")
-  public ResponseEntity deleteUserList(@RequestBody List<Long> ids_soldier) {
+  public ResponseEntity deleteUserList(@RequestBody Set<Long> ids_soldier) {
     serviceUser.deleteUsersList(ids_soldier);
     return ResponseEntity.noContent().build();
   }
