@@ -4,8 +4,11 @@ import ejercito.demo.infra.errors.BadRequestException;
 import ejercito.demo.infra.errors.NotFoundException;
 import ejercito.demo.infra.repository.BarrackRepository;
 import ejercito.demo.models.Barrack;
+import ejercito.demo.models.Body;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +22,13 @@ public class ServiceBarrack {
 
   public Barrack getBarrackById(@Valid Long id_barrack) {
     return findBarrackOrThrow(id_barrack);
+  }
+
+  public Page<Barrack> getBarracksPages(Pageable pageable, String search){
+    if(search != null){
+      return barrackRepository.getPageBarracksFounded(pageable, search);
+    }
+    return barrackRepository.findAll(pageable);
   }
 
   public Barrack createBarrackWithData(@Valid DataRegisterBarrack dataRegisterBarrack) {

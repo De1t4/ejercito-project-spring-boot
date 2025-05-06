@@ -38,8 +38,8 @@ public class BarrackController {
   private ServiceBarrack serviceBarrack;
 
   @GetMapping
-  public ResponseEntity<Page<Barrack>> getBarracksList(@PageableDefault(size = 10)Pageable pageable) {
-    return ResponseEntity.ok(barrackRepository.findAll(pageable));
+  public ResponseEntity<Page<Barrack>> getBarracksList(@RequestParam(required = false) String search, @PageableDefault(size = 10) Pageable pageable) {
+    return ResponseEntity.ok(serviceBarrack.getBarracksPages(pageable, search));
   }
 
   @GetMapping("/{id}")

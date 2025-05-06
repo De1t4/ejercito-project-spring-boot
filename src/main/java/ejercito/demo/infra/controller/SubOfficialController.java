@@ -28,8 +28,8 @@ public class SubOfficialController {
   public ServiceSubOfficial serviceSubOfficial;
 
   @GetMapping
-  private ResponseEntity<Page<DataSubOfficial>> getPageDataSubOficials(@PageableDefault(size = 10) Pageable pageable){
-    Page<DataSubOfficial> dataSubOficialAdmins = serviceSubOfficial.getAllSubOficialsData(pageable);
+  private ResponseEntity<Page<DataSubOfficial>> getPageDataSubOfficials(@RequestParam(required = false) String search, @PageableDefault(size = 10) Pageable pageable){
+    Page<DataSubOfficial> dataSubOficialAdmins = serviceSubOfficial.getAllSubOficialsData(pageable, search);
     return ResponseEntity.ok(dataSubOficialAdmins);
   }
 

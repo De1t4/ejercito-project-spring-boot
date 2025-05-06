@@ -34,8 +34,8 @@ public class BodyController {
   private ServiceBody serviceBody;
 
   @GetMapping
-  public ResponseEntity<Page<Body>> getBodiesArmyList(@PageableDefault(size = 10)Pageable pageable) {
-    return ResponseEntity.ok(bodyRepository.findAll(pageable));
+  public ResponseEntity<Page<Body>> getBodiesArmyList(@RequestParam(required = false) String search, @PageableDefault(size = 10) Pageable pageable) {
+    return ResponseEntity.ok(serviceBody.getCompaniesPages(pageable, search));
   }
 
   @GetMapping("/{id}")

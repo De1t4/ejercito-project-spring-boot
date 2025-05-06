@@ -7,6 +7,8 @@ import ejercito.demo.models.Barrack;
 import ejercito.demo.models.Company;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,6 +19,13 @@ public class ServiceCompany {
 
   @Autowired
   private CompanyRepository companyRepository;
+
+  public Page<Company> getCompaniesPages(Pageable pageable, String search){
+    if(search != null){
+      return companyRepository.getPageCompaniesFounded(pageable, search);
+    }
+    return companyRepository.findAll(pageable);
+  }
 
   public Company getCompanyById(Long id) throws NotFoundException {
     return findCompany(id);

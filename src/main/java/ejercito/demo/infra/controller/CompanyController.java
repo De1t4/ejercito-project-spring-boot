@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -38,8 +37,8 @@ public class CompanyController {
   private ServiceCompany serviceCompany;
 
   @GetMapping
-  public ResponseEntity<Page<Company>> getCompaniesList(@PageableDefault(size = 10)Pageable pageable) {
-    return ResponseEntity.ok(companyRepository.findAll(pageable));
+  public ResponseEntity<Page<Company>> getCompaniesList(@RequestParam(required = false) String search, @PageableDefault(size = 10) Pageable pageable) {
+    return ResponseEntity.ok(serviceCompany.getCompaniesPages(pageable, search));
   }
 
   @GetMapping("/{id}")

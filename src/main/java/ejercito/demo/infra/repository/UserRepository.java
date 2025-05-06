@@ -33,15 +33,25 @@ public interface UserRepository extends JpaRepository<User, Long> {
   User findSubOfficialById(Long id);
 
   @Query("""
-              SELECT u FROM User u
-              WHERE LOWER(u.username) LIKE LOWER(CONCAT('%', :search, '%'))
-                 OR u.id_user LIKE LOWER(CONCAT('%', :search, '%'))
-                 OR LOWER(CONCAT(u.soldier.name, ' ' ,  u.soldier.lastname)) LIKE LOWER(CONCAT('%', :search, '%'))
-                 OR LOWER(u.soldier.name) LIKE LOWER(CONCAT('%', :search, '%'))
-                 OR LOWER(u.soldier.lastname) LIKE LOWER(CONCAT('%', :search, '%'))
-                 OR LOWER(u.soldier.company.activity) LIKE LOWER(CONCAT('%', :search, '%'))
-                 OR LOWER(u.soldier.barrack.name) LIKE LOWER(CONCAT('%', :search, '%'))
-                 OR LOWER(u.soldier.body.denomination) LIKE LOWER(CONCAT('%', :search, '%'))
-         \s""")
+               SELECT u FROM User u
+               WHERE u.role = 'SOLDADO' and ( LOWER(u.username) LIKE LOWER(CONCAT('%', :search, '%'))
+                  OR u.id_user LIKE LOWER(CONCAT('%', :search, '%'))
+                  OR LOWER(CONCAT(u.soldier.name, ' ' ,  u.soldier.lastname)) LIKE LOWER(CONCAT('%', :search, '%'))
+                  OR LOWER(u.soldier.name) LIKE LOWER(CONCAT('%', :search, '%'))
+                  OR LOWER(u.soldier.lastname) LIKE LOWER(CONCAT('%', :search, '%'))
+                  OR LOWER(u.soldier.company.activity) LIKE LOWER(CONCAT('%', :search, '%'))
+                  OR LOWER(u.soldier.barrack.name) LIKE LOWER(CONCAT('%', :search, '%'))
+                  OR LOWER(u.soldier.body.denomination) LIKE LOWER(CONCAT('%', :search, '%')))
+          \s""")
   Page<User> getPageSoldiersFounded(Pageable pageable, String search);
+
+  @Query("""
+               SELECT u FROM User u
+               WHERE u.role = 'SUB_OFICIAL' and ( LOWER(u.username) LIKE LOWER(CONCAT('%', :search, '%'))
+                  OR u.id_user LIKE LOWER(CONCAT('%', :search, '%'))
+                  OR LOWER(CONCAT(u.soldier.name, ' ' ,  u.soldier.lastname)) LIKE LOWER(CONCAT('%', :search, '%'))
+                  OR LOWER(u.soldier.name) LIKE LOWER(CONCAT('%', :search, '%'))
+                  OR LOWER(u.soldier.lastname) LIKE LOWER(CONCAT('%', :search, '%')))
+          \s""")
+  Page<User> getPageSubOfficialsFounded(Pageable pageable, String search);
 }

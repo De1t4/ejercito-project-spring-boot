@@ -9,16 +9,12 @@ import ejercito.demo.models.*;
 import ejercito.demo.service.barrack.ServiceBarrack;
 import ejercito.demo.service.body.ServiceBody;
 import ejercito.demo.service.company.ServiceCompany;
-import ejercito.demo.service.soldier.DataRegisterSoldier;
-import ejercito.demo.service.soldier.DataUpdateSoldier;
 import ejercito.demo.service.soldier.ServiceSoldier;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.util.Set;
 
 @Service
@@ -42,11 +38,14 @@ public class ServiceSubOfficial {
   @Autowired
   private ServiceBody serviceBody;
 
-  public Page<DataSubOfficial> getAllSubOficialsData(Pageable pageable) {
+  public Page<DataSubOfficial> getAllSubOficialsData(Pageable pageable, String search) {
+    if(search != null){
+      Page<User> usersPage = userRepository.getPageSubOfficialsFounded(pageable, search);
+      return usersPage.map(user -> new DataSubOfficial(user.getId_user(), user.getUsername(), user.getSoldier() == null ? null : user.getSoldier()));
+    }
     Page<User> usersPage = userRepository.getPageUsersSubOficials(pageable);
     return usersPage.map(user -> new DataSubOfficial(user.getId_user(), user.getUsername(), user.getSoldier() == null ? null : user.getSoldier()));
   }
-
 
   public User findSubOfficial(Long id_subOfficial) throws NotFoundException {
     User user = userRepository.findSubOfficialById(id_subOfficial);

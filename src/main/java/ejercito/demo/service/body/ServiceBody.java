@@ -5,9 +5,12 @@ import ejercito.demo.infra.errors.NotFoundException;
 import ejercito.demo.infra.repository.BodyRepository;
 import ejercito.demo.models.Barrack;
 import ejercito.demo.models.Body;
+import ejercito.demo.models.Company;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -28,6 +31,13 @@ public class ServiceBody {
     Body body = findBodyArmy(dataUpdateBody.id_body());
     body.updateBodyArmy(dataUpdateBody);
     return body;
+  }
+
+  public Page<Body> getCompaniesPages(Pageable pageable, String search){
+    if(search != null){
+      return bodyRepository.getPageBodiesFounded(pageable, search);
+    }
+    return bodyRepository.findAll(pageable);
   }
 
   @Transactional
