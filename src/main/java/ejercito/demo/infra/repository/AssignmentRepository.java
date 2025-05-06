@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
@@ -24,13 +25,15 @@ public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
   @Query("SELECT s FROM Assignment s where s.end_service is not null")
   List<Assignment> getAssignmentsCompleted();
 
-  @Query("SELECT s FROM Assignment s WHERE s.at_service >= DATE(CURRENT_DATE - 7)")
-  List<Assignment> findRecentAssignments();
+  @Query("SELECT s FROM Assignment s WHERE s.at_service >= :startDate")
+  List<Assignment> findRecentAssignments(LocalDateTime startDate);
 
   @Query("""
               SELECT a FROM Assignment a
-              WHERE LOWER(a.soldier.name) LIKE LOWER(CONCAT('%', :search, '%'))
-                 OR LOWER(a.soldier.lastname) LIKE LOWER(CONCAT('%', :search, '%'))
+              WHERE LOWER(CONCAT(a.soldier.name, ' ' ,  a.soldier.lastname)) LIKE LOWER(CONCAT('%', :search, '%'))
+              OR LOWER(a.soldier.name) LIKE LOWER(CONCAT('%', :search, '%'))
+              OR LOWER(a.soldier.lastname) LIKE LOWER(CONCAT('%', :search, '%'))
+              OR LOWER(a.services.description) LIKE LOWER(CONCAT('%', :search, '%'))
                  OR a.id_services_soldiers LIKE LOWER(CONCAT('%', :search, '%'))
                  OR a.at_service LIKE LOWER(CONCAT('%', :search, '%'))
                  OR a.end_service LIKE LOWER(CONCAT('%', :search, '%'))

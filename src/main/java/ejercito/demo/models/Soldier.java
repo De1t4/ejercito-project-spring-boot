@@ -2,6 +2,7 @@ package ejercito.demo.models;
 
 import ejercito.demo.service.soldier.DataRegisterSoldier;
 import ejercito.demo.service.soldier.DataUpdateSoldier;
+import ejercito.demo.service.subOfficial.DataUpdateSubOfficial;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,16 +27,25 @@ public class Soldier {
   @JoinColumn(name = "id_company")
   private Company company;
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name ="id_barrack")
+  @JoinColumn(name = "id_barrack")
   private Barrack barrack;
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name ="id_body")
+  @JoinColumn(name = "id_body")
   private Body body;
 
-  public Soldier(DataRegisterSoldier dataRegisterSoldier, Company company, Barrack barrack, Body body){
+  public Soldier(DataRegisterSoldier dataRegisterSoldier, Company company, Barrack barrack, Body body) {
     this.name = dataRegisterSoldier.name();
     this.lastname = dataRegisterSoldier.lastname();
     this.graduation = dataRegisterSoldier.graduation();
+    this.company = company;
+    this.barrack = barrack;
+    this.body = body;
+  }
+
+  public Soldier(String name, String lastname, Date graduation, Company company, Barrack barrack, Body body) {
+    this.name = name;
+    this.lastname = lastname;
+    this.graduation = graduation;
     this.company = company;
     this.barrack = barrack;
     this.body = body;
@@ -52,6 +62,19 @@ public class Soldier {
       this.graduation = dataUpdateSoldier.graduation();
     }
   }
+
+  public void updateDataSubOfficial(String name, String lastname, Date graduation) {
+    if (name != null) {
+      this.name = name;
+    }
+    if (lastname != null) {
+      this.lastname = lastname;
+    }
+    if (graduation != null) {
+      this.graduation = graduation;
+    }
+  }
+
 
   public Soldier() {
   }

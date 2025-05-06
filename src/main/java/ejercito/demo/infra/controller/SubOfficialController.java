@@ -3,6 +3,7 @@ package ejercito.demo.infra.controller;
 import ejercito.demo.models.User;
 import ejercito.demo.service.subOfficial.DataCreateSubOfficial;
 import ejercito.demo.service.subOfficial.DataSubOfficial;
+import ejercito.demo.service.subOfficial.DataUpdateSubOfficial;
 import ejercito.demo.service.subOfficial.ServiceSubOfficial;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/v1/sub-official")
@@ -41,6 +43,17 @@ public class SubOfficialController {
     User user = serviceSubOfficial.createSubOfficial(dataCreateSubOfficial);
     URI uri = uriComponentsBuilder.path("/sub-official/{id}").buildAndExpand(user.getId_user()).toUri();
     return ResponseEntity.created(uri).body(new DataSubOfficial(user.getId_user(), user.getPassword(), user.getSoldier() == null ? null: user.getSoldier() ));
+  }
+
+  @PutMapping
+  private ResponseEntity<DataSubOfficial> updateSubOfficial(@RequestBody DataUpdateSubOfficial dataUpdateSubOfficial){
+    return ResponseEntity.ok(serviceSubOfficial.updateSubOfficial(dataUpdateSubOfficial));
+  }
+
+  @DeleteMapping("/delete")
+  private ResponseEntity<Void> deleteSubOfficials(@RequestBody Set<Long> ids){
+    serviceSubOfficial.deleteSubOfficials(ids);
+    return ResponseEntity.noContent().build();
   }
 
 }

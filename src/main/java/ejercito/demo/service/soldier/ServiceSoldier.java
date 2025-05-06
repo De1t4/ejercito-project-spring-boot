@@ -101,6 +101,17 @@ public class ServiceSoldier {
 
   public Soldier updateSoldier(DataUpdateSoldier dataUpdateSoldier) {
     Soldier soldier = findSoldierById(dataUpdateSoldier.id_soldier());
+    User user = userRepository.findUserSoldierById(dataUpdateSoldier.id_soldier());
+
+    if (dataUpdateSoldier.username() != null) {
+      if(!user.getUsername().equals(dataUpdateSoldier.username())){
+        if (userRepository.findByUsername(dataUpdateSoldier.username()).isPresent()) {
+          throw new DuplicateException("THE USER " + dataUpdateSoldier.username() + " HAS ALREADY BEEN REGISTERED");
+        }
+      }
+      user.setUsername(dataUpdateSoldier.username());
+    }
+
     if (dataUpdateSoldier.id_barrack() != null) {
       Barrack barrack = serviceBarrack.getBarrackById(dataUpdateSoldier.id_barrack());
       soldier.setBarrack(barrack);
@@ -115,7 +126,9 @@ public class ServiceSoldier {
       soldier.setBody(body);
     }
 
+
     soldier.updateDataSoldier(dataUpdateSoldier);
+    userRepository.save(user);
     return soldierRepository.save(soldier);
   }
 
@@ -151,7 +164,7 @@ public class ServiceSoldier {
             .collect(Collectors.toList());
   }
 
-  public Soldier createSoldierData (DataRegisterSoldier soldier){
+  public Soldier createSoldierData(DataRegisterSoldier soldier) {
     validateFieldIDs(soldier.id_company(), "id_company");
     validateFieldIDs(soldier.id_barrack(), "id_barrack");
     validateFieldIDs(soldier.id_body(), "id_body");
@@ -159,6 +172,6 @@ public class ServiceSoldier {
     Company company = serviceCompany.getCompanyById(soldier.id_company());
     Barrack barrack = serviceBarrack.getBarrackById(soldier.id_barrack());
     Body body = serviceBody.getBodyById(soldier.id_body());
-    return  soldierRepository.save(new Soldier(soldier, company, barrack, body));
+    return soldierRepository.save(new Soldier(soldier, company, barrack, body));
   }
 }

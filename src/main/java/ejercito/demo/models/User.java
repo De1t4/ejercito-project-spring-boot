@@ -3,6 +3,7 @@ package ejercito.demo.models;
 import ejercito.demo.service.profile.DataUpdateProfile;
 import ejercito.demo.service.soldier.DataRegisterUserWithSoldier;
 import ejercito.demo.service.subOfficial.DataCreateSubOfficial;
+import ejercito.demo.service.subOfficial.DataUpdateSubOfficial;
 import ejercito.demo.service.user.DataRegisterUser;
 import jakarta.persistence.*;
 import lombok.*;
@@ -112,5 +113,13 @@ public class User implements UserDetails {
     if(dataUpdateProfile.newPassword() != null){
       this.password = new BCryptPasswordEncoder().encode(dataUpdateProfile.newPassword());
     }
+  }
+
+  public void setSoldier(Soldier soldier) {
+    this.soldier = soldier;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
   }
 }
