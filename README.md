@@ -17,6 +17,7 @@
 - MySQL instalado y corriendo localmente
 - IDE como IntelliJ o Eclipse (opcional, pero recomendado)
 
+
 1. Clonar el repositorio
 
 ```bash
