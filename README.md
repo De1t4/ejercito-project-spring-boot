@@ -10,13 +10,12 @@
 - MySQL Connector – Driver para conexión con bases de datos MySQL.
 - JWT (JSON Web Tokens) – Autenticación basada en tokens.
 
-## Como iniciar el proyecto
-
 ### Requisitos
 - Java 17
 - MySQL instalado y corriendo localmente
 - IDE como IntelliJ o Eclipse (opcional, pero recomendado)
 
+## Como iniciar el proyecto
 
 1. Clonar el repositorio
 
