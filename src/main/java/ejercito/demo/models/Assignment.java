@@ -1,6 +1,5 @@
 package ejercito.demo.models;
 
-import ejercito.demo.service.assignment.dto.request.DataUpdateAssignment;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,9 +43,6 @@ public class Assignment {
   public Assignment(Soldier soldier, Services services) {
     this.soldier = soldier;
     this.services = services;
-  }
-
-  public Assignment() {
   }
 
   public void finishServiceAssigned() {
