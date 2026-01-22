@@ -39,3 +39,4 @@ DB_URL=jdbc:mysql://localhost:3306/sist_gest_militar;
 DB_USERNAME=root;
 JWT_SECRET=tuSalSecretaMuyLarga1234567890!@#$%
 ```
+
